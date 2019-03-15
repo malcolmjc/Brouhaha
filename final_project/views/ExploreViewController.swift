@@ -7,21 +7,43 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
-    var groupList = [Group("Cal Poly", "Blah"), Group("CENG", "College of Engineering"), Group("CSSE", "Computer Science & Software Engineering"), Group("Yosemite Towers", "The 9 Towers of Yosemite")]
+    var groupList = [Group]()
     var searchActive : Bool = false
     var filteredGroupList : [Group] = []
+    
+    var databaseRef : DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         searchBar.delegate = self
         searchBar.placeholder = "Search groups..."
+        
+        databaseRef = Database.database().reference().child("Groups")
+        retrieveGroups()
+    }
+    
+    func retrieveGroups() {
+        databaseRef?.observe(.value, with:
+            { snapshot in
+                
+                self.groupList = []
+                
+                for item in snapshot.children {
+                    let actItem = item as! DataSnapshot
+                    self.groupList.append(Group(snapshot: actItem))
+                }
+                
+                self.tableView.reloadData()
+        })
     }
     
     @IBAction func addGroupButtonClicked(_ sender: Any) {
@@ -70,7 +92,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
         let group = searchActive ? filteredGroupList[indexPath.row] : groupList[indexPath.row]
 
         cell?.groupLabel.text = group.name
-        cell?.groupDescription.text = group.description
+        cell?.groupDescription.text = group.desc
         
         return cell!
     }

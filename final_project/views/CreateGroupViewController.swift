@@ -7,13 +7,19 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 class CreateGroupViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var groupField: UITextField!
     @IBOutlet weak var textView: UITextView!
     
+    var databaseRef : DatabaseReference!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        databaseRef = Database.database().reference().child("Groups")
         
         textView.delegate = self
         textView.text = "Group description..."
@@ -35,9 +41,15 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     }
     
     var cancelled = false
+    
+    var newGroup: Group?
 
     @IBAction func submitPressed(_ sender: Any) {
         if !groupField.text!.isEmpty {
+            newGroup = Group(groupField.text!, textView.text!)
+            let newGroupRef = databaseRef.child(groupField.text!)
+            newGroupRef.setValue(newGroup!.toAnyObject())
+            
             performSegue(withIdentifier: "unwindToExplore", sender: self)
         }
         
@@ -55,10 +67,8 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         if segue.identifier == "unwindToExplore" {
             let destVC = segue.destination as? ExploreViewController
             if (!cancelled) {
-                //TODO - append group datatype instead w/ title and description
-                destVC?.groupList.append(Group(groupField.text!, textView.text!))
+                //destVC?.groupList.append(newGroup!)
             }
         }
     }
-    
 }

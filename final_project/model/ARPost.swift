@@ -7,3 +7,14 @@
 //
 
 import Foundation
+import ARKit
+
+class ARPost {
+    var content: ARWorldMap
+    var dateCreated: NSDate
+    
+    init(_ content: ARWorldMap) {
+        self.content = content
+        self.dateCreated = NSDate()
+    }
+}

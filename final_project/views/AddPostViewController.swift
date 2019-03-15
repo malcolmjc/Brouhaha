@@ -7,16 +7,24 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import Firebase
 
 class AddPostViewController: UIViewController, UITextViewDelegate {
+    var header: String!
     var groupName: String?
+    
     @IBOutlet weak var groupTitleLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
+    
+    var databaseRef : DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        groupTitleLabel.text = "Post To Group: " + (groupName ?? "Group Title...")
+        databaseRef = Database.database().reference().child("Groups").child(groupName ?? "Cal Poly")
+        
+        groupTitleLabel.text = header
         textView.delegate = self
         textView.text = "Message goes here..."
         textView.textColor = UIColor.lightGray
@@ -36,9 +44,16 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    var newPost: TextPost?
+    
     var cancelled = false
     @IBAction func submitPressed(_ sender: Any) {
-        performSegue(withIdentifier: "unwindToPosts", sender: self)
+        if (!textView.text!.isEmpty) {
+            newPost = TextPost(textView.text)
+            let newPostRef = databaseRef.child("posts").child(newPost!.dateCreated)
+            newPostRef.setValue(newPost?.toAnyObject())
+            performSegue(withIdentifier: "unwindToPosts", sender: self)
+        }
     }
     
     @IBAction func cancelPressed(_ sender: Any) {
@@ -50,7 +65,7 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
         if segue.identifier == "unwindToPosts" {
             let destVC = segue.destination as? FirstViewController
             if (!cancelled) {
-                destVC?.messageList.append(textView.text)
+                destVC?.messageList.append(newPost!)
             }
         }
     }

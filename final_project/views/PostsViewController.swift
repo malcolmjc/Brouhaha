@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
+import MJRefresh
 
 class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -15,12 +18,44 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var addPost: UIButton!
     
     var groupName: String?
-    var messageList = [TextPost("hello"), TextPost("how are you?"), TextPost("wassup"), TextPost("yo")]
+    var messageList = [TextPost]()
+    
+    var databaseRef : DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 64
+        
         groupTitleLabel.text = groupName ?? "Cal Poly"
+        
+        databaseRef = Database.database().reference().child("Groups").child(groupTitleLabel.text!).child("posts")
+        
+        self.tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(FirstViewController.refreshPosts))
+        
+        retrievePosts()
+    }
+    
+    @IBAction func refreshPosts() {
+        retrievePosts()
+        self.tableView.mj_header.endRefreshing()
+    }
+    
+    @IBAction func retrievePosts() {
+        databaseRef?.queryOrdered(byChild: "posts")
+            .observe(.value, with:
+            { snapshot in
+                
+                self.messageList = []
+                
+                for item in snapshot.children {
+                    let actItem = item as! DataSnapshot
+                    self.messageList.append(TextPost(snapshot: actItem))
+                }
+                
+                self.tableView.reloadData()
+        })
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -52,8 +87,11 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @IBAction func unwindToPosts(segue: UIStoryboardSegue) {
-        self.viewDidLoad()
-        tableView.reloadData()
+        groupTitleLabel.text = groupName ?? "Cal Poly"
+        
+        databaseRef = Database.database().reference().child("Groups").child(groupTitleLabel.text!).child("posts")
+        
+        retrievePosts()
     }
 
     @IBAction func addPostClicked(_ sender: Any) {
@@ -64,12 +102,13 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if segue.identifier == "addPost" {
              let destVC = segue.destination as? AddPostViewController
              destVC?.groupName = groupName
+             destVC?.header = "Post to Group: " + (groupName ?? "Cal Poly")
         }
         
         else if segue.identifier == "showPostDetail" {
             let destVC = segue.destination as? PostDetailView
             let selectedIndexPath = tableView.indexPathForSelectedRow
-            destVC?.groupName = groupName
+            destVC?.groupName = groupName ?? "Cal Poly"
             destVC?.post = messageList[selectedIndexPath!.row]
         }
     }
