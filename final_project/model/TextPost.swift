@@ -9,20 +9,23 @@
 import Foundation
 import FirebaseDatabase
 
-class TextPost : NSObject {
+class TextPost : NSObject, Codable {
     var content: String
     var voteCount: Int
     var dateCreated: String
-    
-    let formatter = DateFormatter()
+    var isUpvoted: Bool?
+    var isDownvoted: Bool?
     
     init(_ content: String) {
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         self.content = content
         let dateCreated = NSDate()
         self.dateCreated = formatter.string(from: dateCreated as Date)
         self.voteCount = 0
+        self.isUpvoted = false
+        self.isDownvoted = false
     }
     
     init(snapshot: DataSnapshot) {

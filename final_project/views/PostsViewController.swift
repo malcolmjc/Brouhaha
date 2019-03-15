@@ -20,6 +20,12 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var groupName: String?
     var messageList = [TextPost]()
     
+    //Codable persistence stuff
+    static let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let archiveURL = documentsDirectory.appendingPathComponent("savedPosts")
+    var ourDefaults = UserDefaults.standard
+    var dateFormatter = DateFormatter()
+    
     var databaseRef : DatabaseReference!
     
     override func viewDidLoad() {
@@ -34,7 +40,49 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(FirstViewController.refreshPosts))
         
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
+        
         retrievePosts()
+        getLastUpdate()
+    }
+    
+    func getLastUpdate() {
+        if let lastUpdate = ourDefaults.object(forKey: "lastUpdate") as? Date {
+            
+            let updateString = dateFormatter.string(from: lastUpdate)
+            let dialogString = "Data was last updated:\n\(updateString)"
+            
+            let dialog = UIAlertController(title: "Data Restored", message: dialogString, preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "Go Away", style: .cancel, handler: nil)
+            dialog.addAction(action)
+            
+            present(dialog, animated: true, completion: nil)
+            
+            do {
+                let data = try Data(contentsOf: FirstViewController.archiveURL)
+                let decoder = JSONDecoder()
+                let tempArr = try decoder.decode([TextPost].self, from: data)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func updatePersistentStorage() {
+        // persist data
+        let encoder = JSONEncoder()
+        do {
+            let jsonData = try encoder.encode(messageList)
+            try jsonData.write(to: FirstViewController.archiveURL)
+            
+            // timestamp last update
+            ourDefaults.set(Date(), forKey: "lastUpdate")
+            
+        } catch {
+            print(error)
+        }
     }
     
     @IBAction func refreshPosts() {
