@@ -44,14 +44,12 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    var newPost: TextPost?
-    
     var cancelled = false
     @IBAction func submitPressed(_ sender: Any) {
         if (!textView.text!.isEmpty) {
-            newPost = TextPost(textView.text)
-            let newPostRef = databaseRef.child("posts").child(newPost!.dateCreated)
-            newPostRef.setValue(newPost?.toAnyObject())
+            let newPost = TextPost(textView.text)
+            let newPostRef = databaseRef.child("posts").child(newPost.dateCreated)
+            newPostRef.setValue(newPost.toAnyObject())
             performSegue(withIdentifier: "unwindToPosts", sender: self)
         }
     }
@@ -59,15 +57,6 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
     @IBAction func cancelPressed(_ sender: Any) {
         cancelled = true
         performSegue(withIdentifier: "unwindToPosts", sender: self)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "unwindToPosts" {
-            let destVC = segue.destination as? FirstViewController
-            if (!cancelled) {
-                destVC?.messageList.append(newPost!)
-            }
-        }
     }
 }
 

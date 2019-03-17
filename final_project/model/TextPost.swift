@@ -16,6 +16,7 @@ class TextPost : NSObject, Codable {
     var isUpvoted: Bool?
     var isDownvoted: Bool?
     
+    //if initialized with this constructor then the user just created a new post
     init(_ content: String) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -24,16 +25,22 @@ class TextPost : NSObject, Codable {
         let dateCreated = NSDate()
         self.dateCreated = formatter.string(from: dateCreated as Date)
         self.voteCount = 0
+        
+        //when the user first creates a post it is neither updated nor downvoted
         self.isUpvoted = false
         self.isDownvoted = false
     }
     
+    //otherwise it is being retrieved from the database
     init(snapshot: DataSnapshot) {
         let snapvalues = snapshot.value as! [String : AnyObject]
         
         self.content = snapvalues["content"] as? String ?? "N/A"
         self.dateCreated = snapvalues["dateCreated"] as? String ?? "N/A"
         self.voteCount = snapvalues["voteCount"] as? Int ?? 0
+        
+        //we can't update isUpvoted and isDownvoted because it is not stored within db
+        //it is instead stored locally with Codable
     }
     
     func toAnyObject() -> Any {

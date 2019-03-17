@@ -9,8 +9,27 @@
 import UIKit
 
 class MessageCell : UITableViewCell {
-    var upvoted: Bool = false
-    var downvoted: Bool = false
+    var upvoted: Bool = false {
+        didSet {
+            if (upvoted == true) {
+                changeArrowColors(upvoteArrow: .red, downvoteArrow: .orange)
+            }
+            else {
+                changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
+            }
+        }
+    }
+    
+    var downvoted: Bool = false {
+        didSet {
+            if (downvoted == true) {
+                changeArrowColors(upvoteArrow: .orange, downvoteArrow: .red)
+            }
+            else {
+                changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
+            }
+        }
+    }
     
     @IBOutlet weak var voteLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
@@ -26,8 +45,7 @@ class MessageCell : UITableViewCell {
             upvoted = true
             downvoted = false
             
-            upvoteButton.setTitleColor(.red, for: .normal)
-            downvoteButton.setTitleColor(.orange, for: .normal)
+            changeArrowColors(upvoteArrow: .red, downvoteArrow: .orange)
         }
         
         else {
@@ -37,8 +55,7 @@ class MessageCell : UITableViewCell {
             upvoted = false
             downvoted = false
             
-            upvoteButton.setTitleColor(.orange, for: .normal)
-            downvoteButton.setTitleColor(.orange, for: .normal)
+            changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
         }
     }
     
@@ -50,8 +67,7 @@ class MessageCell : UITableViewCell {
             downvoted = true
             upvoted = false
             
-            downvoteButton.setTitleColor(.red, for: .normal)
-            upvoteButton.setTitleColor(.orange, for: .normal)
+            changeArrowColors(upvoteArrow: .orange, downvoteArrow: .red)
         }
         
         else {
@@ -61,8 +77,12 @@ class MessageCell : UITableViewCell {
             upvoted = false
             downvoted = false
             
-            upvoteButton.setTitleColor(.orange, for: .normal)
-            downvoteButton.setTitleColor(.orange, for: .normal)
+            changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
         }
+    }
+    
+    func changeArrowColors(upvoteArrow lColor: UIColor, downvoteArrow rColor: UIColor) {
+        upvoteButton.setTitleColor(lColor, for: .normal)
+        downvoteButton.setTitleColor(rColor, for: .normal)
     }
 }

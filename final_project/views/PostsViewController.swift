@@ -19,6 +19,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     var groupName: String?
     var messageList = [TextPost]()
+    var cellList = [MessageCell?]()
     
     //Codable persistence stuff
     static let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -44,26 +45,37 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         dateFormatter.timeStyle = .medium
         
         retrievePosts()
-        getLastUpdate()
     }
     
     func getLastUpdate() {
         if let lastUpdate = ourDefaults.object(forKey: "lastUpdate") as? Date {
-            
-            let updateString = dateFormatter.string(from: lastUpdate)
-            let dialogString = "Data was last updated:\n\(updateString)"
-            
-            let dialog = UIAlertController(title: "Data Restored", message: dialogString, preferredStyle: .alert)
-            
-            let action = UIAlertAction(title: "Go Away", style: .cancel, handler: nil)
-            dialog.addAction(action)
-            
-            present(dialog, animated: true, completion: nil)
+            let groupArchiveURL = FirstViewController.documentsDirectory.appendingPathComponent("savedPosts" +
+                ((groupName ?? "Cal Poly").replacingOccurrences(of: " ", with: "")))
             
             do {
-                let data = try Data(contentsOf: FirstViewController.archiveURL)
+                let data = try Data(contentsOf: groupArchiveURL)
                 let decoder = JSONDecoder()
                 let tempArr = try decoder.decode([TextPost].self, from: data)
+                
+                var i = 0
+                for textPost in tempArr {
+                    if let up = textPost.isUpvoted {
+                        if (up) {
+                            messageList[i].isUpvoted = true
+                            messageList[i].isDownvoted = false
+                        }
+                    }
+                    
+                    if let down = textPost.isDownvoted {
+                        if (down) {
+                            messageList[i].isDownvoted = true
+                            messageList[i].isUpvoted = false
+                        }
+                    }
+                    
+                    i += 1
+                }
+               
             } catch {
                 print(error)
             }
@@ -71,11 +83,37 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func updatePersistentStorage() {
+        //find out if a post has been upvoted/downvoted by user
+        var i = 0
+        for cell in cellList {
+            if let c = cell {
+                if cell!.upvoted {
+                    messageList[i].isUpvoted = true
+                    messageList[i].isDownvoted = false
+                }
+                    
+                else if cell!.downvoted {
+                    messageList[i].isDownvoted = true
+                    messageList[i].isUpvoted = false
+                }
+                
+                else {
+                    messageList[i].isDownvoted = false
+                    messageList[i].isUpvoted = false
+                }
+            }
+            
+            i += 1
+        }
+        
+        let groupArchiveURL = FirstViewController.documentsDirectory.appendingPathComponent("savedPosts" + ((groupName ?? "Cal Poly")
+                                .replacingOccurrences(of: " ", with: "")))
+        
         // persist data
         let encoder = JSONEncoder()
         do {
             let jsonData = try encoder.encode(messageList)
-            try jsonData.write(to: FirstViewController.archiveURL)
+            try jsonData.write(to: groupArchiveURL)
             
             // timestamp last update
             ourDefaults.set(Date(), forKey: "lastUpdate")
@@ -91,17 +129,24 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @IBAction func retrievePosts() {
+        self.messageList = []
+        self.cellList = []
+        
         databaseRef?.queryOrdered(byChild: "posts")
             .observe(.value, with:
             { snapshot in
                 
                 self.messageList = []
+                self.cellList = []
                 
                 for item in snapshot.children {
                     let actItem = item as! DataSnapshot
                     self.messageList.append(TextPost(snapshot: actItem))
+                    self.cellList.append(nil)
                 }
                 
+                //get if posts have been updated by the user
+                self.getLastUpdate()
                 self.tableView.reloadData()
         })
     }
@@ -117,16 +162,28 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as? MessageCell
         
+        if (indexPath.row >= messageList.count) {
+            return cell!;
+        }
+        
+        cell!.downvoted = false
+        cell!.upvoted = false
+        
         let message = messageList[indexPath.row]
+        cellList[indexPath.row] = cell
         
         cell?.messageLabel.text = message.content
         
-        if cell!.upvoted {
-            message.voteCount += 1
+        if let down = message.isDownvoted {
+            if down {
+                cell!.downvoted = true
+            }
         }
         
-        else if cell!.downvoted {
-            message.voteCount -= 1
+        if let up = message.isUpvoted {
+            if up {
+                cell!.upvoted = true
+            }
         }
     
         cell?.voteLabel.text = String(message.voteCount)
@@ -159,6 +216,35 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             destVC?.groupName = groupName ?? "Cal Poly"
             destVC?.post = messageList[selectedIndexPath!.row]
         }
+    }
+    
+    func updateVoteCount(_ dateCreated: String, _ newVoteCount: Int) {
+        let postRef = databaseRef.child(dateCreated).child("voteCount")
+        postRef.setValue(newVoteCount)
+    }
+    
+    func updateVoteCounts() {
+        //find out if a post has been upvoted/downvoted by user
+        var i = 0
+        for cell in cellList {
+            if let c = cell {
+                //the user has changed their upvote/downvote, need to update firebase
+                if messageList[i].isUpvoted == nil
+                   || messageList[i].isDownvoted == nil
+                   || cell!.upvoted != messageList[i].isUpvoted!
+                   || cell!.downvoted != messageList[i].isDownvoted!
+                {
+                    updateVoteCount(messageList[i].dateCreated, Int(cell!.voteLabel.text!)!)
+                }
+            }
+            
+            i += 1
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        updateVoteCounts()
+        updatePersistentStorage()
     }
 }
 
