@@ -28,6 +28,7 @@ class PostDetailView : UIViewController, UITableViewDelegate, UITableViewDataSou
         
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 64
+        tableView.separatorColor = UIColor(red:0.76, green:0.55, blue:0.62, alpha:1.0)
         
         groupTitleLabel.text = "Group:\n" + (groupName ?? "N/A")
         messageContentLabel.text = "Message:\n" +  (post?.content ?? "N/A")
@@ -68,18 +69,21 @@ class PostDetailView : UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return commentList.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return commentList.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath) as? CommentCell
         
-        let comment = commentList[indexPath.row]
+        let comment = commentList[indexPath.section]
         cell?.commentLabel.text = comment.content
+        
+        cell?.layer.cornerRadius = 25
+        cell?.layer.masksToBounds = true
         
         return cell!
     }

@@ -34,6 +34,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 64
+        tableView.separatorColor = UIColor(red:0.76, green:0.55, blue:0.62, alpha:1.0)
         
         groupTitleLabel.text = groupName ?? "Cal Poly"
         
@@ -152,25 +153,30 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return messageList.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messageList.count
+        return 1
+    }
+    
+    // Set the spacing between sections
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 12
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as? MessageCell
         
-        if (indexPath.row >= messageList.count) {
+        if (indexPath.section >= messageList.count) {
             return cell!;
         }
         
         cell!.downvoted = false
         cell!.upvoted = false
         
-        let message = messageList[indexPath.row]
-        cellList[indexPath.row] = cell
+        let message = messageList[indexPath.section]
+        cellList[indexPath.section] = cell
         
         cell?.messageLabel.text = message.content
         
@@ -187,6 +193,9 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     
         cell?.voteLabel.text = String(message.voteCount)
+        
+        cell?.layer.cornerRadius = 25
+        cell?.layer.masksToBounds = true
         
         return cell!
     }
@@ -214,7 +223,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let destVC = segue.destination as? PostDetailView
             let selectedIndexPath = tableView.indexPathForSelectedRow
             destVC?.groupName = groupName ?? "Cal Poly"
-            destVC?.post = messageList[selectedIndexPath!.row]
+            destVC?.post = messageList[selectedIndexPath!.section]
         }
     }
     

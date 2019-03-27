@@ -7,6 +7,9 @@ PODS:
   - Firebase/Database (5.17.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (= 5.1.0)
+  - Firebase/Storage (5.17.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (= 3.1.0)
   - FirebaseAnalytics (5.6.0):
     - FirebaseCore (~> 5.3)
     - FirebaseInstanceID (~> 3.5)
@@ -27,6 +30,10 @@ PODS:
     - FirebaseCore (~> 5.3)
     - GoogleUtilities/Environment (~> 5.3)
     - GoogleUtilities/UserDefaults (~> 5.3)
+  - FirebaseStorage (3.1.0):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 5.2)
+    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleAppMeasurement (5.6.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
@@ -51,6 +58,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (5.3.7):
     - GoogleUtilities/Logger
+  - GTMSessionFetcher/Core (1.2.1)
   - leveldb-library (1.20)
   - MJRefresh (3.1.15.7)
   - nanopb (0.3.901):
@@ -58,11 +66,14 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - RGSColorSlider (0.1.1)
 
 DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
+  - Firebase/Storage
   - MJRefresh
+  - RGSColorSlider
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -72,11 +83,14 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseDatabase
     - FirebaseInstanceID
+    - FirebaseStorage
     - GoogleAppMeasurement
     - GoogleUtilities
+    - GTMSessionFetcher
     - leveldb-library
     - MJRefresh
     - nanopb
+    - RGSColorSlider
 
 SPEC CHECKSUMS:
   Firebase: 59d557e064217fab6a03ff00baa73c06e73832e6
@@ -85,12 +99,15 @@ SPEC CHECKSUMS:
   FirebaseCore: c0c4befb82374d6aef64d800e569f47625352edc
   FirebaseDatabase: 23acb0c53cd4d4070a427b60100b2e4aaa97c45d
   FirebaseInstanceID: 4522aad88f69297622062c0e9ffccdee3dd9b151
+  FirebaseStorage: 29075f874c2b3cf61e5221a62c4ceefc809e5412
   GoogleAppMeasurement: 008e04ecd8efedd97a693aea8634aefe220bd26e
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
+  GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  RGSColorSlider: b045e5a4bd9f6fe568184e1ad35dee1f0cdf948f
 
-PODFILE CHECKSUM: 2dba6d85123a2dd78283c608c2b158b89ba67d7b
+PODFILE CHECKSUM: e6f5e24af966cb1bbc480796e00d91745dfcc3b5
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.6.1

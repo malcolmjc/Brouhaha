@@ -8,7 +8,9 @@ target 'final_project' do
   # Pods for final_project
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'Firebase/Storage'
   pod 'MJRefresh'
+  pod 'RGSColorSlider'
 
   target 'final_projectTests' do
     inherit! :search_paths

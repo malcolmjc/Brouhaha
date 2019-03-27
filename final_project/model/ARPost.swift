@@ -11,10 +11,24 @@ import ARKit
 
 class ARPost {
     var content: ARWorldMap
-    var dateCreated: NSDate
+    //var data: Data
+    var dateCreated: String
     
-    init(_ content: ARWorldMap) {
+    init(_ content: ARWorldMap) throws {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
         self.content = content
-        self.dateCreated = NSDate()
+        //self.data = try NSKeyedArchiver.archivedData(withRootObject: content, requiringSecureCoding: true)
+        
+        let dateCreated = NSDate()
+        self.dateCreated = formatter.string(from: dateCreated as Date)
+    }
+    
+    func toAnyObject() -> Any {
+        return [
+            //"content" : content,
+            "dateCreated": dateCreated
+        ]
     }
 }
