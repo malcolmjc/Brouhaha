@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseDatabase
 
-class TextPost : NSObject, Codable {
+class TextPost: NSObject, Codable {
     var content: String
     var voteCount: Int
     var dateCreated: String
@@ -33,11 +33,11 @@ class TextPost : NSObject, Codable {
     
     //otherwise it is being retrieved from the database
     init(snapshot: DataSnapshot) {
-        let snapvalues = snapshot.value as! [String : AnyObject]
+        let snapvalues = snapshot.value as? [String: AnyObject]
         
-        self.content = snapvalues["content"] as? String ?? "N/A"
-        self.dateCreated = snapvalues["dateCreated"] as? String ?? "N/A"
-        self.voteCount = snapvalues["voteCount"] as? Int ?? 0
+        self.content = snapvalues!["content"] as? String ?? "N/A"
+        self.dateCreated = snapvalues!["dateCreated"] as? String ?? "N/A"
+        self.voteCount = snapvalues!["voteCount"] as? Int ?? 0
         
         //we can't update isUpvoted and isDownvoted because it is not stored within db
         //it is instead stored locally with Codable
@@ -45,7 +45,7 @@ class TextPost : NSObject, Codable {
     
     func toAnyObject() -> Any {
         return [
-            "content" : content,
+            "content": content,
             "voteCount": voteCount,
             "dateCreated": dateCreated
         ]

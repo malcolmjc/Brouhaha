@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 
-class PostDetailView : UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PostDetailView: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var groupTitleLabel: UILabel!
     @IBOutlet weak var messageContentLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -21,19 +21,24 @@ class PostDetailView : UIViewController, UITableViewDelegate, UITableViewDataSou
     
     var commentList = [TextPost]()
     
-    var databaseRef : DatabaseReference!
+    var databaseRef: DatabaseReference!
+    
+    func setupAutoDimensionTable() {
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 64
+        tableView.separatorColor = UIColor(red: 0.76, green: 0.55, blue: 0.62, alpha: 1.0)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 64
-        tableView.separatorColor = UIColor(red:0.76, green:0.55, blue:0.62, alpha:1.0)
+        setupAutoDimensionTable()
         
         groupTitleLabel.text = "Group:\n" + (groupName ?? "N/A")
         messageContentLabel.text = "Message:\n" +  (post?.content ?? "N/A")
         
-        let backButton: UIBarButtonItem = UIBarButtonItem(title: "< Back", style: UIBarButtonItem.Style.plain, target: self, action: #selector(backPressed(_:)))
+        let backButton: UIBarButtonItem = UIBarButtonItem(title: "< Back", style: UIBarButtonItem.Style.plain,
+                                                          target: self, action: #selector(backPressed(_:)))
         
         navBar.backBarButtonItem = backButton
         navBar.leftBarButtonItem = backButton
@@ -46,16 +51,15 @@ class PostDetailView : UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func retrieveComments() {
         databaseRef?.queryOrdered(byChild: "comments")
-            .observe(.value, with:
-                { snapshot in
+            .observe(.value, with: { snapshot in
                     
                     self.commentList = []
                     
                     for item in snapshot.children {
-                        let actItem = item as! DataSnapshot
-                        self.commentList.append(TextPost(snapshot: actItem))
+                        let actItem = item as? DataSnapshot
+                        self.commentList.append(TextPost(snapshot: actItem!))
                     }
-                    
+            
                     self.tableView.reloadData()
             })
     }

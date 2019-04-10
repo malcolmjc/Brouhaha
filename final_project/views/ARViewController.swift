@@ -16,6 +16,14 @@ import FirebaseDatabase
 import RGSColorSlider
 import AVFoundation
 
+enum ShapeType {
+    case sphere
+    case plane
+    case ring
+    case pyramid
+    case box
+}
+
 class SecondViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
@@ -29,12 +37,14 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     var lineColour: UIColor!
     
     let strokeTextAttributes: [NSAttributedString.Key : Any] = [
-        .strokeColor : UIColor.black,
-        .foregroundColor : UIColor.white,
-        .strokeWidth : -2.0,
-        ]
+        .strokeColor: UIColor.black,
+        .foregroundColor: UIColor.white,
+        .strokeWidth: -2.0
+    ]
     
     var player: AVAudioPlayer?
+    
+    var selectedAlpha: CGFloat = 0.7
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +53,10 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
         configureLighting()
         
         //set up spray paint can so it's top is midway in the arscene view
-        let heightConstraint = NSLayoutConstraint(item: sprayPaintCan, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: sceneView.bounds.size.height / 2)
+        let heightConstraint = NSLayoutConstraint(item: sprayPaintCan, attribute: NSLayoutConstraint.Attribute.height,
+                                                  relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil,
+                                                  attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1,
+                                                  constant: sceneView.bounds.size.height / 2)
         view.addConstraints([heightConstraint])
         
         shapeButtons = [pyramidButton, cubeButton, planeButton, ringButton, sphereButton]
@@ -54,7 +67,7 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
         let attrString = NSAttributedString(string: "Go back", attributes: strokeTextAttributes)
         editCancelButton.setAttributedTitle(attrString, for: .normal)
         
-        sphereButton.alpha = 0.7
+        sphereButton.alpha = selectedAlpha
         self.becomeFirstResponder()
         
         databaseRef = Database.database().reference().child("newestARPost")
@@ -62,9 +75,7 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     }
     
     override var canBecomeFirstResponder: Bool {
-        get {
-            return true
-        }
+        get { return true }
     }
     
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
@@ -82,14 +93,12 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
                 for node in self.mostRecentlyMadeNodes[0] {
                     node.removeFromParentNode()
                 }
-                
                 self.mostRecentlyMadeNodes.remove(at: 0)
             }
         }
     }
     
     @IBOutlet weak var editCancelButton: UIButton!
-    
     var isInEditMode: Bool = false {
         didSet {
             if isInEditMode == false {
@@ -123,12 +132,12 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @IBAction func lineWidthSliderChangedValue(_ sender: Any) {
-        lineWidth = CGFloat((sender as! UISlider).value)
+        lineWidth = CGFloat((sender as? UISlider)!.value)
     }
     
     @IBAction func colorWidthSliderChangedValue(_ sender: Any) {
-        let colorSlider = sender as! RGSColorSlider
-        lineColour = colorSlider.color!
+        let colorSlider = sender as? RGSColorSlider
+        lineColour = colorSlider!.color!
     }
     
     @IBAction func canTouchedDown(_ sender: Any) {
@@ -146,8 +155,7 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     
     func getStartingWorldMapData() {
         databaseRef?.queryOrdered(byChild: "newestARPost")
-            .observe(.value, with:
-                { snapshot in
+            .observe(.value, with: { snapshot in
                     let httpsReference = self.storage.reference(forURL: snapshot.value as? String ?? "error")
                     
                     httpsReference.getData(maxSize: 3 * 1024 * 1024) { data, error in
@@ -155,22 +163,12 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
                             print("\n\ncould not get newest world map - instead starting with none\n\n")
                             self.resetTrackingConfiguration(with: nil)
                         } else {
-                            print("\n\nunarchiving world map from firebase\n\n")
-                            let newMap = self.unarchive(worldMapData: data!)
-                            print("\n\nresetting tracking configuration\n\n")
-                            print("worldmap == nil: " + String(newMap == nil))
+                            print(error.debugDescription)
+                            let newMap = self.unarchiveData(worldMapData: data!)
                             self.resetTrackingConfiguration(with: newMap)
                         }
                     }
             })
-    }
-    
-    enum ShapeType {
-        case sphere
-        case plane
-        case ring
-        case pyramid
-        case box
     }
     
     var mostRecentlyMadeNodes = [[SCNNode]]()
@@ -186,31 +184,31 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     @IBAction func sphereButtonPressed(_ sender: Any) {
         chosenShape = .sphere
         clearButtonOpacities()
-        sphereButton.alpha = 0.7
+        sphereButton.alpha = selectedAlpha
     }
     
     @IBAction func planeButtonPressed(_ sender: Any) {
         chosenShape = .plane
         clearButtonOpacities()
-        planeButton.alpha = 0.7
+        planeButton.alpha = selectedAlpha
     }
     
     @IBAction func ringButtonPressed(_ sender: Any) {
         chosenShape = .ring
         clearButtonOpacities()
-        ringButton.alpha = 0.7
+        ringButton.alpha = selectedAlpha
     }
     
     @IBAction func pyramidButtonPressed(_ sender: Any) {
         chosenShape = .pyramid
         clearButtonOpacities()
-        pyramidButton.alpha = 0.7
+        pyramidButton.alpha = selectedAlpha
     }
     
     @IBAction func cubeButtonPressed(_ sender: Any) {
         chosenShape = .box
         clearButtonOpacities()
-        cubeButton.alpha = 0.7
+        cubeButton.alpha = selectedAlpha
     }
     
     @IBOutlet weak var pyramidButton: UIButton!
@@ -220,66 +218,72 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var sphereButton: UIButton!
     var shapeButtons: [UIButton] = []
 
+    func getCurrentNodeType(_ width: CGFloat) -> SCNNode {
+        var node: SCNNode
+        
+        switch chosenShape {
+        case .box:
+            node = SCNNode(geometry: SCNBox(width: width, height: width, length: width, chamferRadius: 0.0))
+        case .pyramid:
+            node = SCNNode(geometry: SCNPyramid(width: width, height: width*2, length: width))
+        case .ring:
+            node = SCNNode(geometry: SCNTorus(ringRadius: width, pipeRadius: width/4))
+        case .plane:
+            node = SCNNode(geometry: SCNPlane(width: width, height: width))
+        default:
+            node = SCNNode(geometry: SCNSphere(radius: width))
+        }
+        
+        return node
+    }
+    
+    func displayNode(_ node: SCNNode) {
+        //user is drawing
+        if isDraw {
+            mostRecentlyMadeNodes[0].append(node)
+            sceneView.scene.rootNode.addChildNode(node)
+            
+            if let player = player {
+                if !player.isPlaying {
+                    player.play()
+                } else if player.currentTime >= 1.5 {
+                    player.stop()
+                    player.currentTime = 0.0
+                    player.play()
+                }
+            }
+        }
+            
+        //user is editing, show them a pointer of what they will paint
+        else {
+            DispatchQueue.main.async {
+                if let pointer = self.pointerNode {
+                    pointer.removeFromParentNode()
+                }
+                self.pointerNode = node
+                self.sceneView.scene.rootNode.addChildNode(node)
+            }
+        }
+    }
+    
     func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
         guard let pointOfView = sceneView.pointOfView else { return }
+        //this should not happen but just in case
+        if !isDraw || !isInEditMode { return }
+        
         let transform = pointOfView.transform
         let orientation = SCNVector3(x: -transform.m31, y: -transform.m32, z: -transform.m33)
         let location = SCNVector3(x: transform.m41, y: transform.m42, z: transform.m43)
         let currentPosition = orientation + location
         
-        let w = lineWidth/200
+        let width = lineWidth/200
         
-        if isDraw || isInEditMode {
-            var node: SCNNode
-            switch chosenShape {
-                
-            case .box:
-                node = SCNNode(geometry: SCNBox(width: w, height: w, length: w, chamferRadius: 0.0))
-                
-            case .pyramid:
-                node = SCNNode(geometry: SCNPyramid(width: w, height: w*2, length: w))
-                
-            case .ring:
-                node = SCNNode(geometry: SCNTorus(ringRadius: w, pipeRadius: w/4))
-                
-            case .plane:
-                node = SCNNode(geometry: SCNPlane(width: w, height: w))
-                
-            default:
-                node = SCNNode(geometry: SCNSphere(radius: w))
-            }
-            
-            node.geometry?.firstMaterial?.diffuse.contents = lineColour
-            node.position = currentPosition
+        let node: SCNNode = getCurrentNodeType(width)
     
-            //user is drawing
-            if isDraw {
-                mostRecentlyMadeNodes[0].append(node)
-                sceneView.scene.rootNode.addChildNode(node)
-                
-                if let p = player {
-                    if !p.isPlaying {
-                        p.play()
-                    }
-                    else if p.currentTime >= 1.5 {
-                        p.stop()
-                        p.currentTime = 0.0
-                        p.play()
-                    }
-                }
-            }
-                
-            //user is editing, show them a pointer of what they will paint
-            else {
-                DispatchQueue.main.async {
-                    if let pointer = self.pointerNode {
-                        pointer.removeFromParentNode()
-                    }
-                    self.pointerNode = node
-                    self.sceneView.scene.rootNode.addChildNode(node)
-                }
-            }
-        }
+        node.geometry?.firstMaterial?.diffuse.contents = lineColour
+        node.position = currentPosition
+        
+        displayNode(node)
     }
     
     func configureLighting() {
@@ -303,7 +307,7 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
         
         let options: ARSession.RunOptions = [.resetTracking, .removeExistingAnchors]
         
-        if (worldMap != nil) {
+        if worldMap != nil {
             print("\n\nsetting world map to be decoded map\n\n")
             configuration.initialWorldMap = worldMap
         }
@@ -318,24 +322,22 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
             }
             
             do {
-                try self.archive(worldMap: worldMap)
+                try self.archiveData(worldMap: worldMap)
             } catch {
                 fatalError("Error saving world map: \(error.localizedDescription)")
             }
         }
     }
     
-    func unarchive(worldMapData data: Data) -> ARWorldMap? {
+    func unarchiveData(worldMapData data: Data) -> ARWorldMap? {
         guard let unarchievedObject = try? NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data),
             let worldMap = unarchievedObject else { return nil }
         
         return worldMap
     }
     
-    func archive(worldMap: ARWorldMap) throws {
+    func archiveData(worldMap: ARWorldMap) throws {
         let data = try NSKeyedArchiver.archivedData(withRootObject: worldMap, requiringSecureCoding: true)
-        
-        // Create a storage reference from our storage service
         let storageRef = storage.reference()
         
         let formatter = DateFormatter()
@@ -352,16 +354,13 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
                 // Uh-oh, an error occurred!
                 return
             }
-            // Metadata contains file metadata such as size, content-type.
-            let size = metadata.size
+            
             // You can also access to download URL after upload.
             arpostRef.downloadURL { (url, error) in
                 if let downloadURL = url {
                     self.databaseRef.setValue(downloadURL.absoluteString)
-                }
-                    
-                else {
-                    // Uh-oh, an error occurred!
+                } else {
+                    print(error.debugDescription)
                     return
                 }
             }
@@ -375,11 +374,8 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
             
-            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            //allows player to work on ios11
             self.player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.wav.rawValue)
-            
-            /* iOS 10 and earlier require the following line:
-             player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
             
             guard let player = self.player else { return }
             
@@ -396,9 +392,9 @@ func +(left: SCNVector3, right: SCNVector3) -> SCNVector3 {
 }
 
 func ==(left: SCNVector3, right: SCNVector3) -> Bool {
-    if String(format: "%.1f",left.x) == String(format: "%.1f",right.x) {
-        if String(format: "%.1f",left.y) == String(format: "%.1f",right.y) {
-            if String(format: "%.1f",left.z) == String(format: "%.1f",right.z) {
+    if String(format: "%.1f", left.x) == String(format: "%.1f", right.x) {
+        if String(format: "%.1f", left.y) == String(format: "%.1f", right.y) {
+            if String(format: "%.1f", left.z) == String(format: "%.1f", right.z) {
                 return true
             } else {
                 return false

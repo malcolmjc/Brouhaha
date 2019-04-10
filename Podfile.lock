@@ -67,6 +67,7 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - RGSColorSlider (0.1.1)
+  - SwiftLint (0.31.0)
 
 DEPENDENCIES:
   - Firebase/Core
@@ -74,6 +75,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - MJRefresh
   - RGSColorSlider
+  - SwiftLint
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -91,6 +93,7 @@ SPEC REPOS:
     - MJRefresh
     - nanopb
     - RGSColorSlider
+    - SwiftLint
 
 SPEC CHECKSUMS:
   Firebase: 59d557e064217fab6a03ff00baa73c06e73832e6
@@ -107,7 +110,8 @@ SPEC CHECKSUMS:
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   RGSColorSlider: b045e5a4bd9f6fe568184e1ad35dee1f0cdf948f
+  SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
 
-PODFILE CHECKSUM: e6f5e24af966cb1bbc480796e00d91745dfcc3b5
+PODFILE CHECKSUM: 77b630760875d1c289fa674befee3731dbd919a1
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.5.2

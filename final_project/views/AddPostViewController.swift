@@ -17,7 +17,13 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var groupTitleLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
-    var databaseRef : DatabaseReference!
+    var databaseRef: DatabaseReference!
+    
+    func setupTextView() {
+        textView.delegate = self
+        textView.text = "Message goes here..."
+        textView.textColor = UIColor.lightGray
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,9 +31,7 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
         databaseRef = Database.database().reference().child("Groups").child(groupName ?? "Cal Poly")
         
         groupTitleLabel.text = header
-        textView.delegate = self
-        textView.text = "Message goes here..."
-        textView.textColor = UIColor.lightGray
+        setupTextView()
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -46,7 +50,7 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
     
     var cancelled = false
     @IBAction func submitPressed(_ sender: Any) {
-        if (!textView.text!.isEmpty) {
+        if !textView.text!.isEmpty {
             let newPost = TextPost(textView.text)
             let newPostRef = databaseRef.child("posts").child(newPost.dateCreated)
             newPostRef.setValue(newPost.toAnyObject())
@@ -59,4 +63,3 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
         performSegue(withIdentifier: "unwindToPosts", sender: self)
     }
 }
-

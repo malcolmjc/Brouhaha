@@ -27,20 +27,21 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var ourDefaults = UserDefaults.standard
     var dateFormatter = DateFormatter()
     
-    var databaseRef : DatabaseReference!
+    var databaseRef: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 64
-        tableView.separatorColor = UIColor(red:0.76, green:0.55, blue:0.62, alpha:1.0)
+        tableView.separatorColor = UIColor(red: 0.76, green: 0.55, blue: 0.62, alpha: 1.0)
         
         groupTitleLabel.text = groupName ?? "Cal Poly"
         
         databaseRef = Database.database().reference().child("Groups").child(groupTitleLabel.text!).child("posts")
         
-        self.tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(FirstViewController.refreshPosts))
+        self.tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self,
+                                                         refreshingAction: #selector(FirstViewController.refreshPosts))
         
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .medium
@@ -58,23 +59,23 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 let decoder = JSONDecoder()
                 let tempArr = try decoder.decode([TextPost].self, from: data)
                 
-                var i = 0
+                var idx = 0
                 for textPost in tempArr {
-                    if let up = textPost.isUpvoted {
-                        if (up) {
-                            messageList[i].isUpvoted = true
-                            messageList[i].isDownvoted = false
+                    if let upv = textPost.isUpvoted {
+                        if upv {
+                            messageList[idx].isUpvoted = true
+                            messageList[idx].isDownvoted = false
                         }
                     }
                     
-                    if let down = textPost.isDownvoted {
-                        if (down) {
-                            messageList[i].isDownvoted = true
-                            messageList[i].isUpvoted = false
+                    if let downv = textPost.isDownvoted {
+                        if downv {
+                            messageList[idx].isDownvoted = true
+                            messageList[idx].isUpvoted = false
                         }
                     }
                     
-                    i += 1
+                    idx += 1
                 }
                
             } catch {
@@ -85,29 +86,26 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func updatePersistentStorage() {
         //find out if a post has been upvoted/downvoted by user
-        var i = 0
+        var idx = 0
         for cell in cellList {
-            if let c = cell {
-                if cell!.upvoted {
-                    messageList[i].isUpvoted = true
-                    messageList[i].isDownvoted = false
-                }
-                    
-                else if cell!.downvoted {
-                    messageList[i].isDownvoted = true
-                    messageList[i].isUpvoted = false
-                }
-                
-                else {
-                    messageList[i].isDownvoted = false
-                    messageList[i].isUpvoted = false
+            if let cell = cell {
+                if cell.upvoted {
+                    messageList[idx].isUpvoted = true
+                    messageList[idx].isDownvoted = false
+                } else if cell.downvoted {
+                    messageList[idx].isDownvoted = true
+                    messageList[idx].isUpvoted = false
+                } else {
+                    messageList[idx].isDownvoted = false
+                    messageList[idx].isUpvoted = false
                 }
             }
             
-            i += 1
+            idx += 1
         }
         
-        let groupArchiveURL = FirstViewController.documentsDirectory.appendingPathComponent("savedPosts" + ((groupName ?? "Cal Poly")
+        let groupArchiveURL = FirstViewController.documentsDirectory
+                                .appendingPathComponent("savedPosts" + ((groupName ?? "Cal Poly")
                                 .replacingOccurrences(of: " ", with: "")))
         
         // persist data
@@ -134,15 +132,13 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.cellList = []
         
         databaseRef?.queryOrdered(byChild: "posts")
-            .observe(.value, with:
-            { snapshot in
-                
+            .observe(.value, with: { snapshot in
                 self.messageList = []
                 self.cellList = []
                 
                 for item in snapshot.children {
-                    let actItem = item as! DataSnapshot
-                    self.messageList.append(TextPost(snapshot: actItem))
+                    let actItem = item as? DataSnapshot
+                    self.messageList.append(TextPost(snapshot: actItem!))
                     self.cellList.append(nil)
                 }
                 
@@ -168,8 +164,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as? MessageCell
         
-        if (indexPath.section >= messageList.count) {
-            return cell!;
+        if indexPath.section >= messageList.count {
+            return cell!
         }
         
         cell!.downvoted = false
@@ -186,8 +182,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
         }
         
-        if let up = message.isUpvoted {
-            if up {
+        if let upv = message.isUpvoted {
+            if upv {
                 cell!.upvoted = true
             }
         }
@@ -217,9 +213,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
              let destVC = segue.destination as? AddPostViewController
              destVC?.groupName = groupName
              destVC?.header = "Post to Group: " + (groupName ?? "Cal Poly")
-        }
-        
-        else if segue.identifier == "showPostDetail" {
+        } else if segue.identifier == "showPostDetail" {
             let destVC = segue.destination as? PostDetailView
             let selectedIndexPath = tableView.indexPathForSelectedRow
             destVC?.groupName = groupName ?? "Cal Poly"
@@ -234,20 +228,17 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func updateVoteCounts() {
         //find out if a post has been upvoted/downvoted by user
-        var i = 0
+        var idx = 0
         for cell in cellList {
-            if let c = cell {
+            if let cell = cell {
                 //the user has changed their upvote/downvote, need to update firebase
-                if messageList[i].isUpvoted == nil
-                   || messageList[i].isDownvoted == nil
-                   || cell!.upvoted != messageList[i].isUpvoted!
-                   || cell!.downvoted != messageList[i].isDownvoted!
-                {
-                    updateVoteCount(messageList[i].dateCreated, Int(cell!.voteLabel.text!)!)
+                if messageList[idx].isUpvoted == nil || messageList[idx].isDownvoted == nil
+                   || cell.upvoted != messageList[idx].isUpvoted! || cell.downvoted != messageList[idx].isDownvoted! {
+                    updateVoteCount(messageList[idx].dateCreated, Int(cell.voteLabel.text!)!)
                 }
             }
             
-            i += 1
+            idx += 1
         }
     }
     
@@ -256,4 +247,3 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         updatePersistentStorage()
     }
 }
-

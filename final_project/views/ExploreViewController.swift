@@ -16,10 +16,10 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     
     var groupList = [Group]()
-    var searchActive : Bool = false
-    var filteredGroupList : [Group] = []
+    var searchActive: Bool = false
+    var filteredGroupList: [Group] = []
     
-    var databaseRef : DatabaseReference!
+    var databaseRef: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,14 +32,13 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func retrieveGroups() {
-        databaseRef?.observe(.value, with:
-            { snapshot in
+        databaseRef?.observe(.value, with: { snapshot in
                 
                 self.groupList = []
                 
                 for item in snapshot.children {
-                    let actItem = item as! DataSnapshot
-                    self.groupList.append(Group(snapshot: actItem))
+                    let actItem = item as? DataSnapshot
+                    self.groupList.append(Group(snapshot: actItem!))
                 }
                 
                 self.tableView.reloadData()
@@ -55,15 +54,13 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchActive = false;
+        searchActive = false
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             searchActive = false
-        }
-            
-        else {
+        } else {
             searchActive = true
             filteredGroupList = []
             for group in groupList {
@@ -107,6 +104,4 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
             destVC?.groupName = currentGroup!.name
         }
     }
-    
-    
 }

@@ -18,7 +18,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var previousMessageLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
-    var databaseRef : DatabaseReference!
+    var databaseRef: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,8 +47,6 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     }
     
     var newPost: TextPost?
-    
-    
     var cancelled = false
     
     @IBAction func cancelPressed(_ sender: Any) {
@@ -57,7 +55,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func submitPressed(_ sender: Any) {
-        if (!textView.text!.isEmpty) {
+        if !textView.text!.isEmpty {
             newPost = TextPost(textView.text)
             let newPostRef = databaseRef.child("comments").child(newPost!.dateCreated)
             newPostRef.setValue(newPost?.toAnyObject())
@@ -68,7 +66,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "unwindToPostDetail" {
             let destVC = segue.destination as? PostDetailView
-            if (!cancelled) {
+            if !cancelled {
                 destVC?.commentList.append(newPost!)
             }
         }

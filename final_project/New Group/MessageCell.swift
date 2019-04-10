@@ -8,13 +8,12 @@
 
 import UIKit
 
-class MessageCell : UITableViewCell {
+class MessageCell: UITableViewCell {
     var upvoted: Bool = false {
         didSet {
-            if (upvoted == true) {
+            if upvoted == true {
                 changeArrowColors(upvoteArrow: .red, downvoteArrow: .orange)
-            }
-            else {
+            } else {
                 changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
             }
         }
@@ -22,10 +21,9 @@ class MessageCell : UITableViewCell {
     
     var downvoted: Bool = false {
         didSet {
-            if (downvoted == true) {
+            if downvoted == true {
                 changeArrowColors(upvoteArrow: .orange, downvoteArrow: .red)
-            }
-            else {
+            } else {
                 changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
             }
         }
@@ -37,48 +35,36 @@ class MessageCell : UITableViewCell {
     @IBOutlet weak var upvoteButton: UIButton!
     @IBOutlet weak var downvoteButton: UIButton!
     
-    @IBAction func upvotePressed(_ sender: Any) {
-        if !upvoted {
+    func updateCellAttributes(isUpvote: Bool) {
+        if (downvoted && !isUpvote) || (upvoted && isUpvote) {
             let voteCount = Int(voteLabel.text ?? "0")
-            voteLabel.text = String(voteCount! + (downvoted ? 2 : 1))
-            
-            upvoted = true
-            downvoted = false
-            
-            changeArrowColors(upvoteArrow: .red, downvoteArrow: .orange)
-        }
-        
-        else {
-            let voteCount = Int(voteLabel.text ?? "0")
-            voteLabel.text = String(voteCount! - 1)
+            let toAdd = isUpvote ? -1 : 1
+            voteLabel.text = String(voteCount! + toAdd)
             
             upvoted = false
             downvoted = false
+        } else {
+            let voteCount = Int(voteLabel.text ?? "0")
+            var toAdd: Int
+            if !isUpvote {
+                toAdd = upvoted ? -2 : -1
+            }
+            else {
+                toAdd = downvoted ? 2 : 1
+            }
+            voteLabel.text = String(voteCount! + toAdd)
             
-            changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
+            downvoted = !isUpvote
+            upvoted = isUpvote
         }
     }
     
+    @IBAction func upvotePressed(_ sender: Any) {
+        updateCellAttributes(isUpvote: true)
+    }
+    
     @IBAction func downvotePressed(_ sender: Any) {
-        if !downvoted {
-            let voteCount = Int(voteLabel.text ?? "0")
-            voteLabel.text = String(voteCount! - (upvoted ? 2 : 1))
-            
-            downvoted = true
-            upvoted = false
-            
-            changeArrowColors(upvoteArrow: .orange, downvoteArrow: .red)
-        }
-        
-        else {
-            let voteCount = Int(voteLabel.text ?? "0")
-            voteLabel.text = String(voteCount! + 1)
-            
-            upvoted = false
-            downvoted = false
-            
-            changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
-        }
+        updateCellAttributes(isUpvote: false)
     }
     
     func changeArrowColors(upvoteArrow lColor: UIColor, downvoteArrow rColor: UIColor) {

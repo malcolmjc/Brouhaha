@@ -14,16 +14,18 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var groupField: UITextField!
     @IBOutlet weak var textView: UITextView!
     
-    var databaseRef : DatabaseReference!
+    var databaseRef: DatabaseReference!
+    
+    func setupTextView() {
+        textView.delegate = self
+        textView.text = "Group description goes here..."
+        textView.textColor = UIColor.lightGray
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         databaseRef = Database.database().reference().child("Groups")
-        
-        textView.delegate = self
-        textView.text = "Group description..."
-        textView.textColor = UIColor.lightGray
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -35,7 +37,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "Group description..."
+            textView.text = "Group description goes here..."
             textView.textColor = UIColor.lightGray
         }
     }
@@ -51,9 +53,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
             newGroupRef.setValue(newGroup!.toAnyObject())
             
             performSegue(withIdentifier: "unwindToExplore", sender: self)
-        }
-        
-        else {
+        } else {
             groupField.placeholder = "Must have a name!"
         }
     }
@@ -66,9 +66,9 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "unwindToExplore" {
             let destVC = segue.destination as? ExploreViewController
-            if (!cancelled) {
+            //if !cancelled {
                 //destVC?.groupList.append(newGroup!)
-            }
+            //}
         }
     }
 }

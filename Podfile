@@ -11,6 +11,7 @@ target 'final_project' do
   pod 'Firebase/Storage'
   pod 'MJRefresh'
   pod 'RGSColorSlider'
+  pod 'SwiftLint'
 
   target 'final_projectTests' do
     inherit! :search_paths

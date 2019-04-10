@@ -25,22 +25,22 @@ class Group {
     }
     
     init(snapshot: DataSnapshot) {
-        let snapvalues = snapshot.value as! [String : AnyObject]
+        let snapvalues = snapshot.value as? [String: AnyObject]
         
-        self.name = snapvalues["name"] as? String ?? "N/A"
-        self.desc = snapvalues["description"] as? String ?? "n/a"
-        self.posts = snapvalues["posts"] as? [TextPost] ?? []
+        self.name = snapvalues!["name"] as? String ?? "N/A"
+        self.desc = snapvalues!["description"] as? String ?? "n/a"
+        self.posts = snapvalues!["posts"] as? [TextPost] ?? []
         
-        let dateCreatedStr = snapvalues["datecreated"] as? String ?? "n/a"
+        let dateCreatedStr = snapvalues!["datecreated"] as? String ?? "n/a"
         self.dateCreated = formatter.date(from: dateCreatedStr) as NSDate? ?? NSDate()
     }
     
     func toAnyObject() -> Any {
         return [
-            "name" : name,
-            "description" : desc,
-            "posts" : posts,
-            "dateCreated" : formatter.string(from: dateCreated as Date)
+            "name": name,
+            "description": desc,
+            "posts": posts,
+            "dateCreated": formatter.string(from: dateCreated as Date)
         ]
     }
 }
