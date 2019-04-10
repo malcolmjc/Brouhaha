@@ -11,7 +11,7 @@ import Firebase
 import FirebaseDatabase
 import MJRefresh
 
-class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var groupTitleLabel: UILabel!
@@ -29,19 +29,23 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     var databaseRef: DatabaseReference!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    func setupAutoDimensionTable() {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 64
         tableView.separatorColor = UIColor(red: 0.76, green: 0.55, blue: 0.62, alpha: 1.0)
+        
+        self.tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self,
+                                                         refreshingAction: #selector(PostsViewController.refreshPosts))
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         groupTitleLabel.text = groupName ?? "Cal Poly"
         
         databaseRef = Database.database().reference().child("Groups").child(groupTitleLabel.text!).child("posts")
         
-        self.tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self,
-                                                         refreshingAction: #selector(FirstViewController.refreshPosts))
+        setupAutoDimensionTable()
         
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .medium
@@ -51,7 +55,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func getLastUpdate() {
         if let lastUpdate = ourDefaults.object(forKey: "lastUpdate") as? Date {
-            let groupArchiveURL = FirstViewController.documentsDirectory.appendingPathComponent("savedPosts" +
+            let groupArchiveURL = PostsViewController.documentsDirectory.appendingPathComponent("savedPosts" +
                 ((groupName ?? "Cal Poly").replacingOccurrences(of: " ", with: "")))
             
             do {
@@ -104,7 +108,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             idx += 1
         }
         
-        let groupArchiveURL = FirstViewController.documentsDirectory
+        let groupArchiveURL = PostsViewController.documentsDirectory
                                 .appendingPathComponent("savedPosts" + ((groupName ?? "Cal Poly")
                                 .replacingOccurrences(of: " ", with: "")))
         

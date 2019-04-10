@@ -29,6 +29,13 @@ class PostDetailView: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.separatorColor = UIColor(red: 0.76, green: 0.55, blue: 0.62, alpha: 1.0)
     }
     
+    func setupBackButton() {
+        let backButton: UIBarButtonItem = UIBarButtonItem(title: "< Back", style: UIBarButtonItem.Style.plain,
+                                                          target: self, action: #selector(backPressed(_:)))
+        navBar.backBarButtonItem = backButton
+        navBar.leftBarButtonItem = backButton
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,11 +44,7 @@ class PostDetailView: UIViewController, UITableViewDelegate, UITableViewDataSour
         groupTitleLabel.text = "Group:\n" + (groupName ?? "N/A")
         messageContentLabel.text = "Message:\n" +  (post?.content ?? "N/A")
         
-        let backButton: UIBarButtonItem = UIBarButtonItem(title: "< Back", style: UIBarButtonItem.Style.plain,
-                                                          target: self, action: #selector(backPressed(_:)))
-        
-        navBar.backBarButtonItem = backButton
-        navBar.leftBarButtonItem = backButton
+        setupBackButton()
         
         databaseRef = Database.database().reference().child("Groups")
             .child(groupName ?? "Cal Poly").child("posts").child(post!.dateCreated).child("comments")

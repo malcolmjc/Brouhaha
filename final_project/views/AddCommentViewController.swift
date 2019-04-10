@@ -20,6 +20,12 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
     
     var databaseRef: DatabaseReference!
     
+    func setupTextView() {
+        textView.delegate = self
+        textView.text = "Add your comment here"
+        textView.textColor = UIColor.lightGray
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,9 +33,7 @@ class AddCommentViewController: UIViewController, UITextViewDelegate {
             .child("posts").child(postToCommentOn.dateCreated)
         
         previousMessageLabel.text = "Previous Post: " + postToCommentOn.content
-        textView.delegate = self
-        textView.text = "Add your comment here"
-        textView.textColor = UIColor.lightGray
+        setupTextView()
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {

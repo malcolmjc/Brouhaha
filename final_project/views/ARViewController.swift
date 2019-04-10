@@ -1,5 +1,5 @@
 //
-//  SecondViewController.swift
+//  ARViewController.swift
 //  final_project
 //
 //  Created by liblabs-mac on 3/2/19.
@@ -24,7 +24,7 @@ enum ShapeType {
     case box
 }
 
-class SecondViewController: UIViewController, ARSCNViewDelegate {
+class ARViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
     
@@ -33,8 +33,8 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     var storage: Storage!
     
     var isDraw: Bool = false
-    var lineWidth: CGFloat!
-    var lineColour: UIColor!
+    var nodeWidth: CGFloat! = 3
+    var nodeColor: UIColor! = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1)
     
     let strokeTextAttributes: [NSAttributedString.Key : Any] = [
         .strokeColor: UIColor.black,
@@ -60,9 +60,6 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
         view.addConstraints([heightConstraint])
         
         shapeButtons = [pyramidButton, cubeButton, planeButton, ringButton, sphereButton]
-        
-        lineWidth = 3
-        lineColour = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1)
         
         let attrString = NSAttributedString(string: "Go back", attributes: strokeTextAttributes)
         editCancelButton.setAttributedTitle(attrString, for: .normal)
@@ -108,9 +105,10 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
             }
         }
     }
-    
+
     @IBAction func editPressed(_ sender: Any) {
         isInEditMode = true
+        
         colorSlider.isHidden = false
         lineWidthSlider.isHidden = false
         editCancelButton.isHidden = false
@@ -122,6 +120,7 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     
     @IBAction func editCancellPressed(_ sender: Any) {
         isInEditMode = false
+        
         colorSlider.isHidden = true
         lineWidthSlider.isHidden = true
         editCancelButton.isHidden = true
@@ -132,12 +131,12 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @IBAction func lineWidthSliderChangedValue(_ sender: Any) {
-        lineWidth = CGFloat((sender as? UISlider)!.value)
+        nodeWidth = CGFloat((sender as? UISlider)!.value)
     }
     
     @IBAction func colorWidthSliderChangedValue(_ sender: Any) {
         let colorSlider = sender as? RGSColorSlider
-        lineColour = colorSlider!.color!
+        nodeColor = colorSlider!.color!
     }
     
     @IBAction func canTouchedDown(_ sender: Any) {
@@ -276,11 +275,11 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
         let location = SCNVector3(x: transform.m41, y: transform.m42, z: transform.m43)
         let currentPosition = orientation + location
         
-        let width = lineWidth/200
+        let width = nodeWidth/200
         
         let node: SCNNode = getCurrentNodeType(width)
     
-        node.geometry?.firstMaterial?.diffuse.contents = lineColour
+        node.geometry?.firstMaterial?.diffuse.contents = nodeColor
         node.position = currentPosition
         
         displayNode(node)
@@ -368,7 +367,7 @@ class SecondViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func playSound(name: String) {
-        guard let url = Bundle.main.url(forResource: name, withExtension: "wav") else { return }
+        guard let url = Bundle.main.url(forResource: "audio/" + name, withExtension: "wav") else { return }
         
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)

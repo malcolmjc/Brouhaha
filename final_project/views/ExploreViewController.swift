@@ -100,7 +100,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "unwindToPosts" {
-            let destVC = segue.destination as? FirstViewController
+            let destVC = segue.destination as? PostsViewController
             destVC?.groupName = currentGroup!.name
         }
     }
