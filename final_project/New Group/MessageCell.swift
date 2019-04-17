@@ -13,7 +13,7 @@ class MessageCell: UITableViewCell {
         didSet {
             if upvoted == true {
                 changeArrowColors(upvoteArrow: .red, downvoteArrow: .orange)
-            } else {
+            } else if !downvoted {
                 changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
             }
         }
@@ -23,17 +23,17 @@ class MessageCell: UITableViewCell {
         didSet {
             if downvoted == true {
                 changeArrowColors(upvoteArrow: .orange, downvoteArrow: .red)
-            } else {
+            } else if !upvoted {
                 changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
             }
         }
     }
     
-    @IBOutlet weak var voteLabel: UILabel!
+    @IBOutlet var voteLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     
-    @IBOutlet weak var upvoteButton: UIButton!
-    @IBOutlet weak var downvoteButton: UIButton!
+    @IBOutlet var upvoteButton: UIButton!
+    @IBOutlet var downvoteButton: UIButton!
     
     func updateCellAttributes(isUpvote: Bool) {
         if (downvoted && !isUpvote) || (upvoted && isUpvote) {

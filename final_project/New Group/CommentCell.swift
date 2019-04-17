@@ -10,16 +10,16 @@ import UIKit
 
 class CommentCell: UITableViewCell {
     @IBOutlet weak var commentLabel: UILabel!
-    @IBOutlet weak var voteLabel: UILabel!
+    @IBOutlet var voteLabel: UILabel!
     
-    @IBOutlet weak var upvoteButton: UIButton!
-    @IBOutlet weak var downvoteButton: UIButton!
+    @IBOutlet var upvoteButton: UIButton!
+    @IBOutlet var downvoteButton: UIButton!
 
     var upvoted: Bool = false {
         didSet {
             if upvoted == true {
                 changeArrowColors(upvoteArrow: .red, downvoteArrow: .orange)
-            } else {
+            } else if !downvoted {
                 changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
             }
         }
@@ -29,7 +29,7 @@ class CommentCell: UITableViewCell {
         didSet {
             if downvoted == true {
                 changeArrowColors(upvoteArrow: .orange, downvoteArrow: .red)
-            } else {
+            } else if !upvoted {
                 changeArrowColors(upvoteArrow: .orange, downvoteArrow: .orange)
             }
         }

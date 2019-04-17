@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28164A772266EDF1003B4DF4 /* CommentCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28164A762266EDF1003B4DF4 /* CommentCellTests.swift */; };
+		28164A792266EE16003B4DF4 /* MessageCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28164A782266EE16003B4DF4 /* MessageCellTests.swift */; };
 		285CAFD82266D52A005CF728 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285CAFD52266D529005CF728 /* CommentCell.swift */; };
 		285CAFD92266D52A005CF728 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285CAFD62266D529005CF728 /* MessageCell.swift */; };
 		285CAFDA2266D52A005CF728 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285CAFD72266D52A005CF728 /* GroupCell.swift */; };
 		285CAFDE2266D899005CF728 /* spray.wav in Resources */ = {isa = PBXBuildFile; fileRef = 285CAFDC2266D899005CF728 /* spray.wav */; };
 		285CAFDF2266D899005CF728 /* shake.wav in Resources */ = {isa = PBXBuildFile; fileRef = 285CAFDD2266D899005CF728 /* shake.wav */; };
+		285CAFE12266E6BC005CF728 /* TextPostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285CAFE02266E6BC005CF728 /* TextPostTests.swift */; };
 		33F51A0CD16661318B89556D /* Pods_final_projectUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF8CECCEE574F73564B13D75 /* Pods_final_projectUITests.framework */; };
 		5B7BCFFF40A50D4047B044F5 /* Pods_final_projectTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F60825198828AFA0FBD099 /* Pods_final_projectTests.framework */; };
 		763E46BB222DE04A008EF20F /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763E46BA222DE04A008EF20F /* AddCommentViewController.swift */; };
@@ -55,11 +58,14 @@
 		005E3023F773ED7FA60415EA /* Pods-final_projectTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_projectTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-final_projectTests/Pods-final_projectTests.debug.xcconfig"; sourceTree = "<group>"; };
 		19F60825198828AFA0FBD099 /* Pods_final_projectTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_final_projectTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		26B87661A3EE45A65E900C6E /* Pods-final_projectTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_projectTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-final_projectTests/Pods-final_projectTests.release.xcconfig"; sourceTree = "<group>"; };
+		28164A762266EDF1003B4DF4 /* CommentCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellTests.swift; sourceTree = "<group>"; };
+		28164A782266EE16003B4DF4 /* MessageCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCellTests.swift; sourceTree = "<group>"; };
 		285CAFD52266D529005CF728 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		285CAFD62266D529005CF728 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		285CAFD72266D52A005CF728 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		285CAFDC2266D899005CF728 /* spray.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = spray.wav; path = final_project/audio/spray.wav; sourceTree = SOURCE_ROOT; };
 		285CAFDD2266D899005CF728 /* shake.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = shake.wav; path = final_project/audio/shake.wav; sourceTree = SOURCE_ROOT; };
+		285CAFE02266E6BC005CF728 /* TextPostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPostTests.swift; sourceTree = "<group>"; };
 		6B13DCFCF9C57ADD559363C3 /* Pods-final_projectUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_projectUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests.release.xcconfig"; sourceTree = "<group>"; };
 		763E46BA222DE04A008EF20F /* AddCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
 		83F938434BD4F3A7C38B5F03 /* Pods-final_project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_project.debug.xcconfig"; path = "Pods/Target Support Files/Pods-final_project/Pods-final_project.debug.xcconfig"; sourceTree = "<group>"; };
@@ -233,6 +239,9 @@
 			children = (
 				F1E3B1C9222B5E7D00EDB5F7 /* final_projectTests.swift */,
 				F1E3B1CB222B5E7D00EDB5F7 /* Info.plist */,
+				285CAFE02266E6BC005CF728 /* TextPostTests.swift */,
+				28164A762266EDF1003B4DF4 /* CommentCellTests.swift */,
+				28164A782266EE16003B4DF4 /* MessageCellTests.swift */,
 			);
 			path = final_projectTests;
 			sourceTree = "<group>";
@@ -512,6 +521,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				285CAFE12266E6BC005CF728 /* TextPostTests.swift in Sources */,
+				28164A792266EE16003B4DF4 /* MessageCellTests.swift in Sources */,
+				28164A772266EDF1003B4DF4 /* CommentCellTests.swift in Sources */,
 				F1E3B1CA222B5E7D00EDB5F7 /* final_projectTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

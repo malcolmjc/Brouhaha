@@ -10,19 +10,53 @@ import XCTest
 @testable import final_project
 
 class final_projectTests: XCTestCase {
+   
+   var group: Group!
+   var desc: String = "test description"
+   var name_: String = "test name"
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+      group = Group(name_, desc)
     }
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+      group = nil
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func testToAny() {
+      let groupAnyObj = group.toAnyObject()
+      let groupDict = groupAnyObj as? Dictionary<String, Any>
+
+      let desc = groupDict!["description"] as! String
+      XCTAssert(desc == self.desc)
+      
+      let name = groupDict!["name"] as! String
+      XCTAssert(name == self.name)
+      
+      let date = groupDict!["dateCreated"] as! String
+      XCTAssert(date.isEmpty == false)
+   }
+   
+   func testToAny2() {
+      let newDesc = "new desc"
+      let newName = "new name"
+      group.desc = newDesc
+      group.name = newName
+      
+      let groupAnyObj = group.toAnyObject()
+      let groupDict = groupAnyObj as? Dictionary<String, Any>
+      
+      let desc = groupDict!["description"] as! String
+      XCTAssert(desc == newDesc)
+      
+      let name = groupDict!["name"] as! String
+      XCTAssert(name == newName)
+      
+      let date = groupDict!["dateCreated"] as! String
+      XCTAssert(date.isEmpty == false)
+   }
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
