@@ -21,6 +21,11 @@ target 'final_project' do
   target 'final_projectUITests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'Firebase/Core'
+    pod 'Firebase/Database' 
+    pod 'Firebase/Storage'
+    pod 'MJRefresh'
+    pod 'RGSColorSlider'
   end
 
 end
