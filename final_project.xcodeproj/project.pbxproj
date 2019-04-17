@@ -7,18 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		28E42C2C2241C4570020E2A1 /* spray.wav in Resources */ = {isa = PBXBuildFile; fileRef = 28E42C2B2241C4560020E2A1 /* spray.wav */; };
-		28E42C2E2241C4930020E2A1 /* shake.wav in Resources */ = {isa = PBXBuildFile; fileRef = 28E42C2D2241C4920020E2A1 /* shake.wav */; };
+		285CAFD82266D52A005CF728 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285CAFD52266D529005CF728 /* CommentCell.swift */; };
+		285CAFD92266D52A005CF728 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285CAFD62266D529005CF728 /* MessageCell.swift */; };
+		285CAFDA2266D52A005CF728 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285CAFD72266D52A005CF728 /* GroupCell.swift */; };
+		285CAFDE2266D899005CF728 /* spray.wav in Resources */ = {isa = PBXBuildFile; fileRef = 285CAFDC2266D899005CF728 /* spray.wav */; };
+		285CAFDF2266D899005CF728 /* shake.wav in Resources */ = {isa = PBXBuildFile; fileRef = 285CAFDD2266D899005CF728 /* shake.wav */; };
 		33F51A0CD16661318B89556D /* Pods_final_projectUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF8CECCEE574F73564B13D75 /* Pods_final_projectUITests.framework */; };
 		5B7BCFFF40A50D4047B044F5 /* Pods_final_projectTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F60825198828AFA0FBD099 /* Pods_final_projectTests.framework */; };
 		763E46BB222DE04A008EF20F /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763E46BA222DE04A008EF20F /* AddCommentViewController.swift */; };
 		C540792ED4F5747C7B8BAD10 /* Pods_final_project.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E287F423605875EBC4B9FC75 /* Pods_final_project.framework */; };
 		F152C674222CD9C8003AB199 /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F152C673222CD9C8003AB199 /* TextPost.swift */; };
-		F152C677222CDA40003AB199 /* ARPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F152C676222CDA40003AB199 /* ARPost.swift */; };
 		F152C67B222CEE82003AB199 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F152C67A222CEE82003AB199 /* GoogleService-Info.plist */; };
 		F152C67F222CF4CD003AB199 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F152C67E222CF4CD003AB199 /* CoreText.framework */; };
 		F1CD623A222B83C300B2E537 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CD6239222B83C300B2E537 /* PostDetailView.swift */; };
-		F1CD623C222B882400B2E537 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CD623B222B882400B2E537 /* CommentCell.swift */; };
 		F1CD623E222B8AC200B2E537 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CD623D222B8AC200B2E537 /* CreateGroupViewController.swift */; };
 		F1CD6241222B902B00B2E537 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CD6240222B902B00B2E537 /* Group.swift */; };
 		F1E3B1B3222B5E6B00EDB5F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1B2222B5E6B00EDB5F7 /* AppDelegate.swift */; };
@@ -30,8 +31,6 @@
 		F1E3B1CA222B5E7D00EDB5F7 /* final_projectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1C9222B5E7D00EDB5F7 /* final_projectTests.swift */; };
 		F1E3B1D5222B5E7D00EDB5F7 /* final_projectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1D4222B5E7D00EDB5F7 /* final_projectUITests.swift */; };
 		F1E3B1E3222B613A00EDB5F7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1E2222B613A00EDB5F7 /* ExploreViewController.swift */; };
-		F1E3B1E5222B690E00EDB5F7 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1E4222B690E00EDB5F7 /* GroupCell.swift */; };
-		F1E3B1E7222B737C00EDB5F7 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1E6222B737C00EDB5F7 /* MessageCell.swift */; };
 		F1E3B1E9222B770700EDB5F7 /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1E8222B770700EDB5F7 /* AddPostViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,8 +55,11 @@
 		005E3023F773ED7FA60415EA /* Pods-final_projectTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_projectTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-final_projectTests/Pods-final_projectTests.debug.xcconfig"; sourceTree = "<group>"; };
 		19F60825198828AFA0FBD099 /* Pods_final_projectTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_final_projectTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		26B87661A3EE45A65E900C6E /* Pods-final_projectTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_projectTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-final_projectTests/Pods-final_projectTests.release.xcconfig"; sourceTree = "<group>"; };
-		28E42C2B2241C4560020E2A1 /* spray.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = spray.wav; sourceTree = "<group>"; };
-		28E42C2D2241C4920020E2A1 /* shake.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = shake.wav; sourceTree = "<group>"; };
+		285CAFD52266D529005CF728 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		285CAFD62266D529005CF728 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		285CAFD72266D52A005CF728 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
+		285CAFDC2266D899005CF728 /* spray.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = spray.wav; path = final_project/audio/spray.wav; sourceTree = SOURCE_ROOT; };
+		285CAFDD2266D899005CF728 /* shake.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = shake.wav; path = final_project/audio/shake.wav; sourceTree = SOURCE_ROOT; };
 		6B13DCFCF9C57ADD559363C3 /* Pods-final_projectUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_projectUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests.release.xcconfig"; sourceTree = "<group>"; };
 		763E46BA222DE04A008EF20F /* AddCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
 		83F938434BD4F3A7C38B5F03 /* Pods-final_project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_project.debug.xcconfig"; path = "Pods/Target Support Files/Pods-final_project/Pods-final_project.debug.xcconfig"; sourceTree = "<group>"; };
@@ -66,12 +68,10 @@
 		E287F423605875EBC4B9FC75 /* Pods_final_project.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_final_project.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10ED001419B1B3EBAF65F0D /* Pods-final_projectUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_projectUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F152C673222CD9C8003AB199 /* TextPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPost.swift; sourceTree = "<group>"; };
-		F152C676222CDA40003AB199 /* ARPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARPost.swift; sourceTree = "<group>"; };
 		F152C67A222CEE82003AB199 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F152C67C222CF167003AB199 /* final_project.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = final_project.entitlements; sourceTree = "<group>"; };
 		F152C67E222CF4CD003AB199 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F1CD6239222B83C300B2E537 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
-		F1CD623B222B882400B2E537 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		F1CD623D222B8AC200B2E537 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 		F1CD6240222B902B00B2E537 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		F1E3B1AF222B5E6A00EDB5F7 /* final_project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = final_project.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,8 +89,6 @@
 		F1E3B1D4222B5E7D00EDB5F7 /* final_projectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = final_projectUITests.swift; sourceTree = "<group>"; };
 		F1E3B1D6222B5E7D00EDB5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F1E3B1E2222B613A00EDB5F7 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
-		F1E3B1E4222B690E00EDB5F7 /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
-		F1E3B1E6222B737C00EDB5F7 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		F1E3B1E8222B770700EDB5F7 /* AddPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,6 +121,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		285CAFDB2266D868005CF728 /* sound */ = {
+			isa = PBXGroup;
+			children = (
+				285CAFDD2266D899005CF728 /* shake.wav */,
+				285CAFDC2266D899005CF728 /* spray.wav */,
+			);
+			path = sound;
+			sourceTree = "<group>";
+		};
 		AB43E8F05DD608C2600214C4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,9 +160,9 @@
 		F152C672222CD888003AB199 /* cells */ = {
 			isa = PBXGroup;
 			children = (
-				F1E3B1E4222B690E00EDB5F7 /* GroupCell.swift */,
-				F1E3B1E6222B737C00EDB5F7 /* MessageCell.swift */,
-				F1CD623B222B882400B2E537 /* CommentCell.swift */,
+				285CAFD52266D529005CF728 /* CommentCell.swift */,
+				285CAFD72266D52A005CF728 /* GroupCell.swift */,
+				285CAFD62266D529005CF728 /* MessageCell.swift */,
 			);
 			name = cells;
 			path = "New Group";
@@ -177,7 +184,6 @@
 			children = (
 				F1CD6240222B902B00B2E537 /* Group.swift */,
 				F152C673222CD9C8003AB199 /* TextPost.swift */,
-				F152C676222CDA40003AB199 /* ARPost.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -207,8 +213,7 @@
 		F1E3B1B1222B5E6A00EDB5F7 /* final_project */ = {
 			isa = PBXGroup;
 			children = (
-				28E42C2D2241C4920020E2A1 /* shake.wav */,
-				28E42C2B2241C4560020E2A1 /* spray.wav */,
+				285CAFDB2266D868005CF728 /* sound */,
 				F152C67C222CF167003AB199 /* final_project.entitlements */,
 				F152C67A222CEE82003AB199 /* GoogleService-Info.plist */,
 				F152C672222CD888003AB199 /* cells */,
@@ -356,10 +361,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1E3B1BF222B5E7C00EDB5F7 /* LaunchScreen.storyboard in Resources */,
+				285CAFDF2266D899005CF728 /* shake.wav in Resources */,
 				F152C67B222CEE82003AB199 /* GoogleService-Info.plist in Resources */,
-				28E42C2E2241C4930020E2A1 /* shake.wav in Resources */,
 				F1E3B1BC222B5E7C00EDB5F7 /* Assets.xcassets in Resources */,
-				28E42C2C2241C4570020E2A1 /* spray.wav in Resources */,
+				285CAFDE2266D899005CF728 /* spray.wav in Resources */,
 				F1E3B1BA222B5E6B00EDB5F7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,7 +428,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-final_project/Pods-final_project-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-final_project/Pods-final_project-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
@@ -442,7 +447,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-final_project/Pods-final_project-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-final_project/Pods-final_project-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		76AF4158225E63CB006D9C0E /* ShellScript */ = {
@@ -488,17 +493,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1CD6241222B902B00B2E537 /* Group.swift in Sources */,
+				285CAFD92266D52A005CF728 /* MessageCell.swift in Sources */,
 				F1CD623E222B8AC200B2E537 /* CreateGroupViewController.swift in Sources */,
-				F1E3B1E5222B690E00EDB5F7 /* GroupCell.swift in Sources */,
+				285CAFDA2266D52A005CF728 /* GroupCell.swift in Sources */,
 				F1E3B1E3222B613A00EDB5F7 /* ExploreViewController.swift in Sources */,
 				F1E3B1B7222B5E6B00EDB5F7 /* ARViewController.swift in Sources */,
+				285CAFD82266D52A005CF728 /* CommentCell.swift in Sources */,
 				F1CD623A222B83C300B2E537 /* PostDetailView.swift in Sources */,
 				F1E3B1B3222B5E6B00EDB5F7 /* AppDelegate.swift in Sources */,
-				F1CD623C222B882400B2E537 /* CommentCell.swift in Sources */,
 				F152C674222CD9C8003AB199 /* TextPost.swift in Sources */,
 				F1E3B1B5222B5E6B00EDB5F7 /* PostsViewController.swift in Sources */,
-				F152C677222CDA40003AB199 /* ARPost.swift in Sources */,
-				F1E3B1E7222B737C00EDB5F7 /* MessageCell.swift in Sources */,
 				763E46BB222DE04A008EF20F /* AddCommentViewController.swift in Sources */,
 				F1E3B1E9222B770700EDB5F7 /* AddPostViewController.swift in Sources */,
 			);

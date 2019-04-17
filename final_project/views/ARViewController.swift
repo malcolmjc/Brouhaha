@@ -367,7 +367,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func playSound(name: String) {
-        guard let url = Bundle.main.url(forResource: "audio/" + name, withExtension: "wav") else { return }
+        guard let url = Bundle.main.url(forResource: "sound/" + name, withExtension: "wav") else { return }
         
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
