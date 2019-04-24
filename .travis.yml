@@ -1,3 +1,6 @@
+before_install:
+  - gem install cocoapods -v '0.32.1'
+
 language: swift
 xcode_workspace: final_project.xcworkspace # path to your xcworkspace folder
 xcode_scheme: final_projectTests

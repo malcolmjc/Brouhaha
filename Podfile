@@ -6,7 +6,7 @@ target 'final_project' do
   use_frameworks!
 
   # Pods for final_project
-  pod 'Firebase/Core (= 5.17.0)'
+  pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'MJRefresh'
@@ -24,7 +24,7 @@ target 'final_project' do
   target 'final_projectUITests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'Firebase/Core (= 5.17.0)'
+    pod 'Firebase/Core'
     pod 'Firebase/Database' 
     pod 'Firebase/Storage'
     pod 'MJRefresh'
