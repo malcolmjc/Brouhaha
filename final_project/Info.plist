@@ -22,6 +22,12 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow camera usage for AR capabilities?</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow location capabilities</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow location capabilities?</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow location capabilities</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
