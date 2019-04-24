@@ -1,5 +1,5 @@
 osx_image: xcode10.2
 language: swift
 xcode_workspace: final_project.xcworkspace # path to your xcworkspace folder
-xcode_scheme: final_projectTests
+xcode_scheme: final_project
 xcode_destination: platform=iOS Simulator,OS=11.3,name=iPhone X
