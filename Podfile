@@ -29,6 +29,9 @@ target 'final_project' do
     pod 'Firebase/Storage'
     pod 'MJRefresh'
     pod 'RGSColorSlider'
+    pod 'GooglePlaces'
+    pod 'GoogleMaps'
+    pod 'SwiftyJSON'
   end
 
 end
