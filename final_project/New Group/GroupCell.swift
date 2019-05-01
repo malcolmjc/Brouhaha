@@ -9,6 +9,5 @@
 import UIKit
 
 class GroupCell: UITableViewCell {
-    @IBOutlet weak var groupDescription: UILabel!
     @IBOutlet weak var groupLabel: UILabel!
 }

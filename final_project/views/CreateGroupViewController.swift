@@ -22,10 +22,11 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         textView.textColor = UIColor.lightGray
     }
     
+    var supergroupName: String!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        databaseRef = Database.database().reference().child("Groups")
+        databaseRef = Database.database().reference().child("Groups").child(supergroupName).child("subgroups")
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -44,15 +45,16 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     
     var cancelled = false
     
-    var newGroup: Group?
+    var newGroup: Subgroup?
 
     @IBAction func submitPressed(_ sender: Any) {
         if !groupField.text!.isEmpty {
-            newGroup = Group(groupField.text!, textView.text!)
+            newGroup = Subgroup(groupField.text!, textView.text!)
             let newGroupRef = databaseRef.child(groupField.text!)
             newGroupRef.setValue(newGroup!.toAnyObject())
             
-            performSegue(withIdentifier: "unwindToExplore", sender: self)
+            //TODO - uncomment this
+            //performSegue(withIdentifier: "unwindToExplore", sender: self)
         } else {
             groupField.placeholder = "Must have a name!"
         }

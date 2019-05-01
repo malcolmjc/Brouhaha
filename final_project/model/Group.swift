@@ -10,15 +10,13 @@ import FirebaseDatabase
 
 class Group {
     var name: String
-    var desc: String
-    var posts: [TextPost] = [TextPost]()
     var dateCreated: NSDate
+    var subgroups: [Subgroup] = [Subgroup]()
     
     let formatter = DateFormatter()
     
-    init(_ name: String, _ desc: String) {
+    init(_ name: String) {
         self.name = name
-        self.desc = desc
         self.dateCreated = NSDate()
 
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -28,8 +26,7 @@ class Group {
         let snapvalues = snapshot.value as? [String: AnyObject]
         
         self.name = snapvalues!["name"] as? String ?? "N/A"
-        self.desc = snapvalues!["description"] as? String ?? "n/a"
-        self.posts = snapvalues!["posts"] as? [TextPost] ?? []
+        self.subgroups = snapvalues!["subgroups"] as? [Subgroup] ?? []
         
         let dateCreatedStr = snapvalues!["datecreated"] as? String ?? "n/a"
         self.dateCreated = formatter.date(from: dateCreatedStr) as NSDate? ?? NSDate()
@@ -38,9 +35,8 @@ class Group {
     func toAnyObject() -> Any {
         return [
             "name": name,
-            "description": desc,
-            "posts": posts,
-            "dateCreated": formatter.string(from: dateCreated as Date)
+            "dateCreated": formatter.string(from: dateCreated as Date),
+            "subgroups": subgroups
         ]
     }
 }
