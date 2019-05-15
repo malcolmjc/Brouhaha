@@ -384,6 +384,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             print(error.localizedDescription)
         }
     }
+    
+    @IBAction func cancelIconPressed(_ sender: Any) {
+        performSegue(withIdentifier: "unwindToMap", sender: self)
+    }
 }
 
 func +(left: SCNVector3, right: SCNVector3) -> SCNVector3 {

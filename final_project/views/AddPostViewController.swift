@@ -13,6 +13,7 @@ import Firebase
 class AddPostViewController: UIViewController, UITextViewDelegate {
     var header: String!
     var groupName: String?
+    var subgroupName: String!
     
     @IBOutlet weak var groupTitleLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
@@ -28,7 +29,7 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        databaseRef = Database.database().reference().child("Groups").child(groupName ?? "Cal Poly")
+        databaseRef = Database.database().reference().child("Groups").child(groupName ?? "Cal Poly").child("subgroups").child(subgroupName)
         
         groupTitleLabel.text = header
         setupTextView()

@@ -26,6 +26,7 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     static let archiveURL = documentsDirectory.appendingPathComponent("savedPosts")
     var ourDefaults = UserDefaults.standard
     var dateFormatter = DateFormatter()
+    var superGroup = ""
     
     var databaseRef: DatabaseReference!
     
@@ -41,9 +42,13 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        groupTitleLabel.text = groupName ?? "Cal Poly"
+        groupTitleLabel.text = groupName ?? "students"
         
-        databaseRef = Database.database().reference().child("Groups").child(groupTitleLabel.text!).child("posts")
+        /*databaseRef = Database.database().reference().child("Groups")
+            .child(superGroup).child("subgroups").child(groupTitleLabel.text!)*/
+        
+        databaseRef = Database.database().reference().child("Groups")
+            .child(groupTitleLabel.text!).child("posts")
         
         setupAutoDimensionTable()
         
@@ -200,10 +205,11 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return cell!
     }
     
+    var subgroupName = ""
     @IBAction func unwindToPosts(segue: UIStoryboardSegue) {
-        groupTitleLabel.text = groupName ?? "Cal Poly"
+        groupTitleLabel.text = subgroupName
         
-        databaseRef = Database.database().reference().child("Groups").child(groupTitleLabel.text!).child("posts")
+        databaseRef = Database.database().reference().child("Groups").child(groupName!).child("subgroups").child(subgroupName).child("posts")
         
         retrievePosts()
     }
@@ -216,6 +222,7 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if segue.identifier == "addPost" {
              let destVC = segue.destination as? AddPostViewController
              destVC?.groupName = groupName
+             destVC?.subgroupName = subgroupName
              destVC?.header = "Post to Group: " + (groupName ?? "Cal Poly")
         } else if segue.identifier == "showPostDetail" {
             let destVC = segue.destination as? PostDetailView

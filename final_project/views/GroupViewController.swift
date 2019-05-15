@@ -19,11 +19,17 @@ class GroupViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var supergroupNameLabel: UILabel!
     var groupName: String!
     
+    func setupBackButton() {
+        let backButton: UIBarButtonItem = UIBarButtonItem(title: "< Back", style: UIBarButtonItem.Style.plain,
+                            target: self, action: #selector(backPressed(_:)))
+        navBar.backBarButtonItem = backButton
+        navBar.leftBarButtonItem = backButton
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        subgroupList.append(Subgroup("name", "desc"))
-        subgroupList.append(Subgroup("name2", "desc2"))
+        setupBackButton()
         
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 64
@@ -32,6 +38,12 @@ class GroupViewController: UIViewController, UITableViewDelegate, UITableViewDat
         supergroupNameLabel.text = groupName
         databaseRef = Database.database().reference().child("Groups").child(groupName)
         groupExists()
+    }
+    
+    var backPressed = false
+    @IBAction func backPressed(_ sender: Any) {
+        backPressed = true
+        performSegue(withIdentifier: "unwindToExplore", sender: self)
     }
     
     func groupExists() {
@@ -48,6 +60,7 @@ class GroupViewController: UIViewController, UITableViewDelegate, UITableViewDat
         })
     }
     
+    @IBOutlet weak var navBar: UINavigationItem!
     func retrieveGroups() {
         databaseRef?.child("subgroups").observe(.value, with: { snapshot in
             
@@ -61,7 +74,6 @@ class GroupViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.tableView.reloadData()
         })
     }
-    
     
     @IBAction func addSubgroupButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "addSubgroup", sender: self)
@@ -97,6 +109,14 @@ class GroupViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let destVC = segue.destination as? CreateGroupViewController
             destVC?.supergroupName = groupName
         }
+        if segue.identifier == "unwindToExplore" {
+            let destVC = segue.destination as? ExploreViewController
+            destVC?.subgroupName = currentGroup?.name ?? ""
+            destVC?.transitionToPosts = !backPressed
+        }
+    }
+    
+    @IBAction func unwindToGroup(segue: UIStoryboardSegue) {
     }
 }
 

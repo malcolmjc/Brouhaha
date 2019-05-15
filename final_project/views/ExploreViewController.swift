@@ -76,6 +76,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
         return URL(string: urlString)
     }
     
+    var knownSubGroups: [Subgroup] = []
     func getNearbyPlaces(_ coordinate: CLLocationCoordinate2D, radius: Double, types: [String]) -> Void {
         if let task = placesTask, task.taskIdentifier > 0 && task.state == .running {
             task.cancel()
@@ -104,15 +105,30 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
                     return
             }
         
+            self.databaseRef = Database.database().reference().child("Groups")
             results.forEach {
                 let place = GooglePlace(dictionary: $0, acceptedTypes: types)
                 placesArray.append(place)
-                self.groupList.append(Group(place.name))
-                /*if let reference = place.photoReference {
-                    self.fetchPhotoFromReference(reference) { image in
-                        place.photo = image
+                var name = place.name.replacingOccurrences(of: ".", with: "")
+                name = name.replacingOccurrences(of: "#", with: "")
+                name = name.replacingOccurrences(of: "$", with: "")
+                name = name.replacingOccurrences(of: "[", with: "")
+                name = name.replacingOccurrences(of: "]", with: "")
+                let group = Group(name)
+                self.groupList.append(group)
+                
+                self.databaseRef.child(name).child("subgroups").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if snapshot.exists() {
+                        for child in snapshot.children {
+                            if let snap = child as? DataSnapshot {
+                                let subgroup = Subgroup(snapshot: snap)
+                                group.subgroups.append(subgroup)
+                            }
+                        }
                     }
-                }*/
+                    }) { (error) in
+                        print(error.localizedDescription)
+                }
             }
         }
         placesTask?.resume()
@@ -121,20 +137,6 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func getCurrentPlace() {
         getNearbyPlaces(locationManager.location!.coordinate, radius: searchRadius, types: searchedTypes)
-    }
-    
-    func retrieveGroups() {
-        databaseRef?.observe(.value, with: { snapshot in
-                
-                self.groupList = []
-                
-                for item in snapshot.children {
-                    let actItem = item as? DataSnapshot
-                    self.groupList.append(Group(snapshot: actItem!))
-                }
-                
-                self.tableView.reloadData()
-        })
     }
     
     @IBAction func addGroupButtonClicked(_ sender: Any) {
@@ -182,6 +184,11 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
                 if group.name.lowercased().contains(searchText.lowercased()) {
                     filteredGroupList.append(group)
                 }
+                for subgroup in group.subgroups {
+                    if subgroup.name.lowercased().contains(searchText.lowercased()) {
+                        filteredGroupList.append(group)
+                    }
+                }
             }
         }
         
@@ -208,14 +215,30 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell!
     }
     
+    var transitionToPosts = false
     @IBAction func unwindToExplore(segue: UIStoryboardSegue) {
-        tableView.reloadData()
+        if !transitionToPosts {
+            tableView.reloadData()
+        }
+        else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
+                self.performSegue(withIdentifier: "unwindToPosts", sender: self)
+            })
+        }
     }
     
+    var subgroupName = ""
+    var supergroupName = ""
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "getSubgroups" {
             let destVC = segue.destination as? GroupViewController
             destVC?.groupName = currentGroup!.name
+        }
+        
+        if segue.identifier == "unwindToPosts" {
+            let destVC = segue.destination as? PostsViewController
+            destVC?.groupName = currentGroup!.name
+            destVC?.subgroupName = subgroupName
         }
     }
 }

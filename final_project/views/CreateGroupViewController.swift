@@ -54,7 +54,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
             newGroupRef.setValue(newGroup!.toAnyObject())
             
             //TODO - uncomment this
-            //performSegue(withIdentifier: "unwindToExplore", sender: self)
+            performSegue(withIdentifier: "unwindToGroup", sender: self)
         } else {
             groupField.placeholder = "Must have a name!"
         }
@@ -62,15 +62,15 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func cancelPressed(_ sender: Any) {
         cancelled = true
-        performSegue(withIdentifier: "unwindToExplore", sender: self)
+        performSegue(withIdentifier: "unwindToGroup", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "unwindToExplore" {
-            let destVC = segue.destination as? ExploreViewController
-            //if !cancelled {
-                //destVC?.groupList.append(newGroup!)
-            //}
+        if segue.identifier == "unwindToGroup" {
+            let destVC = segue.destination as? GroupViewController
+            if !cancelled {
+                destVC?.subgroupList.append(newGroup!)
+            }
         }
     }
 }

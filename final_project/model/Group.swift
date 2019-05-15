@@ -27,7 +27,6 @@ class Group {
         
         self.name = snapvalues!["name"] as? String ?? "N/A"
         self.subgroups = snapvalues!["subgroups"] as? [Subgroup] ?? []
-        
         let dateCreatedStr = snapvalues!["datecreated"] as? String ?? "n/a"
         self.dateCreated = formatter.date(from: dateCreatedStr) as NSDate? ?? NSDate()
     }
