@@ -15,6 +15,7 @@ import Firebase
 import FirebaseDatabase
 import RGSColorSlider
 import AVFoundation
+import CoreLocation
 
 enum ShapeType {
     case sphere
@@ -24,7 +25,7 @@ enum ShapeType {
     case box
 }
 
-class ARViewController: UIViewController, ARSCNViewDelegate {
+class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
     
@@ -45,6 +46,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     var player: AVAudioPlayer?
     
     var selectedAlpha: CGFloat = 0.7
+    
+    var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,8 +70,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         sphereButton.alpha = selectedAlpha
         self.becomeFirstResponder()
         
-        databaseRef = Database.database().reference().child("newestARPost")
+        databaseRef = Database.database().reference().child("ARPosts")
         storage = Storage.storage()
+        
+        locationManager.delegate = self
+        /*locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()*/
     }
     
     override var canBecomeFirstResponder: Bool {
@@ -76,9 +83,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     }
     
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        if motion == .motionShake {
+        /*if motion == .motionShake {
             playSound(name: "shake")
-        }
+        }*/
     }
     
     @IBOutlet weak var colorSlider: RGSColorSlider!
@@ -142,18 +149,21 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     @IBAction func canTouchedDown(_ sender: Any) {
         mostRecentlyMadeNodes.insert([SCNNode](), at: 0)
         isDraw = true
-        playSound(name: "spray")
+        //playSound(name: "spray")
     }
     
     @IBAction func canDoneTouched(_ sender: Any) {
         isDraw = false
-        if player?.isPlaying ?? false {
+        /*if player?.isPlaying ?? false {
             player!.stop()
-        }
+        }*/
     }
     
     func getStartingWorldMapData() {
-        databaseRef?.queryOrdered(byChild: "newestARPost")
+        //TODO: change this so it gets data from nearby posts
+        print("resetting tracking config")
+        self.resetTrackingConfiguration(with: nil)
+        /*databaseRef?.queryOrdered(byChild: "newestARPost")
             .observe(.value, with: { snapshot in
                     let httpsReference = self.storage.reference(forURL: snapshot.value as? String ?? "error")
                     
@@ -167,7 +177,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                             self.resetTrackingConfiguration(with: newMap)
                         }
                     }
-            })
+            })*/
     }
     
     var mostRecentlyMadeNodes = [[SCNNode]]()
@@ -242,7 +252,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             mostRecentlyMadeNodes[0].append(node)
             sceneView.scene.rootNode.addChildNode(node)
             
-            if let player = player {
+            /*if let player = player {
                 if !player.isPlaying {
                     player.play()
                 } else if player.currentTime >= 1.5 {
@@ -250,7 +260,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     player.currentTime = 0.0
                     player.play()
                 }
-            }
+            }*/
         }
             
         //user is editing, show them a pointer of what they will paint
@@ -268,7 +278,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
         guard let pointOfView = sceneView.pointOfView else { return }
         //this should not happen but just in case
-        if !isDraw || !isInEditMode { return }
+        if !isDraw && !isInEditMode { return }
         
         let transform = pointOfView.transform
         let orientation = SCNVector3(x: -transform.m31, y: -transform.m32, z: -transform.m33)
@@ -315,13 +325,15 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     }
 
     @IBAction func saveClicked(_ sender: Any) {
+        let userCoords = locationManager.location!.coordinate
         sceneView.session.getCurrentWorldMap { (worldMap, error) in
             guard let worldMap = worldMap else {
+                print("here - worldmap")
                 return
             }
             
             do {
-                try self.archiveData(worldMap: worldMap)
+                try self.archiveData(worldMap: worldMap, coordinate: userCoords)
             } catch {
                 fatalError("Error saving world map: \(error.localizedDescription)")
             }
@@ -335,7 +347,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         return worldMap
     }
     
-    func archiveData(worldMap: ARWorldMap) throws {
+    func archiveData(worldMap: ARWorldMap, coordinate: CLLocationCoordinate2D) throws {
         let data = try NSKeyedArchiver.archivedData(withRootObject: worldMap, requiringSecureCoding: true)
         let storageRef = storage.reference()
         
@@ -357,7 +369,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             // You can also access to download URL after upload.
             arpostRef.downloadURL { (url, error) in
                 if let downloadURL = url {
-                    self.databaseRef.setValue(downloadURL.absoluteString)
+                    print(downloadURL.absoluteString)
+                    let newAnnotation = ARAnnotation(
+                                                 dateCreated: dateCreatedStr,
+                                                 imageLink: "Just Testing",
+                                                 worldMapDataLink: downloadURL.absoluteString,
+                                                 latitude: coordinate.latitude,
+                                                 longitude: coordinate.longitude)
+                    
+                    self.databaseRef.child(newAnnotation.dateCreated)
+                        .setValue(newAnnotation.toAnyObject())
                 } else {
                     print(error.debugDescription)
                     return
@@ -387,6 +408,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     
     @IBAction func cancelIconPressed(_ sender: Any) {
         performSegue(withIdentifier: "unwindToMap", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     }
 }
 
