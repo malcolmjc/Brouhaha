@@ -40,21 +40,41 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
         let annotationIdentifier = "arPostIdentifier"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
         if annotationView == nil {
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
-            //annotationView?.canShowCallout = true
             
-            // Resize image
-            let pinImage = UIImage(named: "test.png")
-            let size = CGSize(width: 50, height: 50)
-            UIGraphicsBeginImageContext(size)
-            pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-            let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-            
-            annotationView?.image = resizedImage
+            let arAnnotation = annotation as? ARAnnotation
+            // Resize image if it exists and use it as a thumbnail
+            if let anno = arAnnotation {
+                let pinImage = anno.pngImage
+                if let image = pinImage {
+                    var size = CGSize(width: 50, height: 50)
+                    UIGraphicsBeginImageContext(size)
+                    image.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    var resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    //annotationView?.image = resizedImage
+                    //annotationView?.layer.cornerRadius = (annotationView?.frame.size.width)! / 2
+                    //annotationView?.clipsToBounds = true
+                    
+                    var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    imageView.image = resizedImage
+                    imageView.layer.cornerRadius = imageView.layer.frame.size.width / 2
+                    imageView.layer.masksToBounds = true
+                    annotationView?.addSubview(imageView)
+                    annotationView?.frame = imageView.frame
+                    
+                    annotationView?.canShowCallout = true
+                    size = CGSize(width: 248, height: 248)
+                    UIGraphicsBeginImageContext(size)
+                    image.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    imageView = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 248, height: 248))
+                    imageView.image = resizedImage
+                    annotationView?.detailCalloutAccessoryView = imageView
+                }
+            }
         }
         else {
             annotationView?.annotation = annotation
@@ -64,8 +84,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        mapView.removeAnnotations(mapView.annotations)
-        
         updateRegionQuery()
     }
     
@@ -78,9 +96,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         regionQuery?.observe(.keyEntered, with: { (key, location) in
             self.databaseRef?.queryOrderedByKey().queryEqual(toValue: key).observe(.value, with: { snapshot in
-                
                 let newARAnno = ARAnnotation(key:key, snapshot:snapshot)
-                self.addNewARAnnotation(newARAnno)
+                if !self.alreadyUsedUrls.contains(newARAnno.worldMapDataLink) {
+                    self.addNewARAnnotation(newARAnno)
+                }
             })
         })
     }
@@ -89,9 +108,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         mapView.setRegion(MKCoordinateRegion.init(center: (mapView.userLocation.location?.coordinate)!, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)), animated: true)
     }
     
+    var alreadyUsedUrls = Set<String>()
     func addNewARAnnotation(_ arAnnotation: ARAnnotation) {
         DispatchQueue.main.async {
-            self.map.addAnnotation(arAnnotation)
+            self.alreadyUsedUrls.insert(arAnnotation.worldMapDataLink)
+            arAnnotation.getImageData(completion: { () in self.map.addAnnotation(arAnnotation) })
         }
     }
     
@@ -116,5 +137,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
     @IBAction func cameraButton(_ sender: Any) {
         performSegue(withIdentifier: "showARCamera", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showARCamera" {
+            let destVC = segue.destination as? ARViewController
+            destVC?.geoFire = self.geoFire
+        }
     }
 }

@@ -9,6 +9,7 @@ class ARAnnotation : NSObject, MKAnnotation {
     var imageLink: String
     var worldMapDataLink: String
     var dateCreated: String
+    var pngImage: UIImage?
     
     init(dateCreated: String, imageLink: String, worldMapDataLink: String, latitude: Double, longitude: Double) {
         self.dateCreated = dateCreated
@@ -34,6 +35,33 @@ class ARAnnotation : NSObject, MKAnnotation {
         ref = snapshot.ref
         
         super.init()
+    }
+    
+    func getImageData(completion: @escaping () -> Void) {
+        print("getting image data for an ar post")
+        let storage: Storage = Storage.storage()
+        if validUrl(imageLink) {
+            let httpsReference = storage.reference(forURL: imageLink as? String ?? "error")
+            httpsReference.getData(maxSize: 10 * 1024 * 1024) { data, error in
+                if let error = error {
+                    print("could not retrieve imageData")
+                    completion()
+                } else {
+                    print("set image data for an ar post")
+                    self.pngImage = UIImage(data: data!)
+                    completion()
+                }
+            }
+        }
+        else {
+            print("unable to retrieve data for URL - " + imageLink)
+            completion()
+        }
+    }
+    
+    func validUrl(_ url: String) -> Bool {
+        //gs://, http://, or https://
+        return url.contains("gs://") || url.contains("http://") || url.contains("https://")
     }
     
     var coordinate: CLLocationCoordinate2D {

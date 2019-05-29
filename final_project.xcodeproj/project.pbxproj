@@ -20,6 +20,9 @@
 		285CAFDE2266D899005CF728 /* spray.wav in Resources */ = {isa = PBXBuildFile; fileRef = 285CAFDC2266D899005CF728 /* spray.wav */; };
 		285CAFDF2266D899005CF728 /* shake.wav in Resources */ = {isa = PBXBuildFile; fileRef = 285CAFDD2266D899005CF728 /* shake.wav */; };
 		285CAFE12266E6BC005CF728 /* TextPostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285CAFE02266E6BC005CF728 /* TextPostTests.swift */; };
+		2882F137229EF94000957EF9 /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882F136229EF93F00957EF9 /* save.png */; };
+		2882F139229EF95100957EF9 /* undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882F138229EF95000957EF9 /* undo.png */; };
+		2882F13B229EF96000957EF9 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882F13A229EF95F00957EF9 /* edit.png */; };
 		28E34C5422701DF800566639 /* GooglePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E34C5322701DF800566639 /* GooglePlace.swift */; };
 		28F034F6228BCA3C0019FE39 /* UIStoryboardSegueWithCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F034F5228BCA3C0019FE39 /* UIStoryboardSegueWithCompletion.swift */; };
 		28F034F8228C76540019FE39 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F034F7228C76540019FE39 /* MapViewController.swift */; };
@@ -83,6 +86,9 @@
 		285CAFDC2266D899005CF728 /* spray.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = spray.wav; path = final_project/audio/spray.wav; sourceTree = SOURCE_ROOT; };
 		285CAFDD2266D899005CF728 /* shake.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = shake.wav; path = final_project/audio/shake.wav; sourceTree = SOURCE_ROOT; };
 		285CAFE02266E6BC005CF728 /* TextPostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPostTests.swift; sourceTree = "<group>"; };
+		2882F136229EF93F00957EF9 /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
+		2882F138229EF95000957EF9 /* undo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = undo.png; sourceTree = "<group>"; };
+		2882F13A229EF95F00957EF9 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
 		28E34C5322701DF800566639 /* GooglePlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlace.swift; sourceTree = "<group>"; };
 		28F034F5228BCA3C0019FE39 /* UIStoryboardSegueWithCompletion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardSegueWithCompletion.swift; sourceTree = "<group>"; };
 		28F034F7228C76540019FE39 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -250,6 +256,9 @@
 		F1E3B1B1222B5E6A00EDB5F7 /* final_project */ = {
 			isa = PBXGroup;
 			children = (
+				2882F13A229EF95F00957EF9 /* edit.png */,
+				2882F138229EF95000957EF9 /* undo.png */,
+				2882F136229EF93F00957EF9 /* save.png */,
 				28F03505228C90B70019FE39 /* red_x.png */,
 				28F034FD228C88F00019FE39 /* camera.png */,
 				28F034FB228C7EFE0019FE39 /* test.png */,
@@ -413,10 +422,13 @@
 				285CAFDF2266D899005CF728 /* shake.wav in Resources */,
 				28F034FC228C7EFE0019FE39 /* test.png in Resources */,
 				F152C67B222CEE82003AB199 /* GoogleService-Info.plist in Resources */,
+				2882F13B229EF96000957EF9 /* edit.png in Resources */,
 				F1E3B1BC222B5E7C00EDB5F7 /* Assets.xcassets in Resources */,
+				2882F137229EF94000957EF9 /* save.png in Resources */,
 				285CAFDE2266D899005CF728 /* spray.wav in Resources */,
 				28F034FE228C88F00019FE39 /* camera.png in Resources */,
 				F1E3B1BA222B5E6B00EDB5F7 /* Main.storyboard in Resources */,
+				2882F139229EF95100957EF9 /* undo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

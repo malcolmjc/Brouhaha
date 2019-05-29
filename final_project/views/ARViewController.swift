@@ -16,6 +16,7 @@ import FirebaseDatabase
 import RGSColorSlider
 import AVFoundation
 import CoreLocation
+import GeoFire
 
 enum ShapeType {
     case sphere
@@ -48,6 +49,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     var selectedAlpha: CGFloat = 0.7
     
     var locationManager = CLLocationManager()
+    var geoFire : GeoFire?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +61,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let heightConstraint = NSLayoutConstraint(item: sprayPaintCan, attribute: NSLayoutConstraint.Attribute.height,
                                                   relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil,
                                                   attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1,
-                                                  constant: sceneView.bounds.size.height / 2)
+                                                  constant: sceneView.bounds.size.height / 2.25)
         view.addConstraints([heightConstraint])
         
         shapeButtons = [pyramidButton, cubeButton, planeButton, ringButton, sphereButton]
@@ -74,8 +76,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         storage = Storage.storage()
         
         locationManager.delegate = self
-        /*locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()*/
     }
     
     override var canBecomeFirstResponder: Bool {
@@ -91,17 +91,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     @IBOutlet weak var colorSlider: RGSColorSlider!
     @IBOutlet weak var lineWidthSlider: UISlider!
     
-    @IBAction func undoPressed(_ sender: Any) {
-        if mostRecentlyMadeNodes.count >= 1 {
-            DispatchQueue.main.async {
-                for node in self.mostRecentlyMadeNodes[0] {
-                    node.removeFromParentNode()
-                }
-                self.mostRecentlyMadeNodes.remove(at: 0)
-            }
-        }
-    }
-    
     @IBOutlet weak var editCancelButton: UIButton!
     var isInEditMode: Bool = false {
         didSet {
@@ -113,15 +102,49 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         }
     }
 
-    @IBAction func editPressed(_ sender: Any) {
+    @IBAction func changePaintPressed(_ sender: Any) {
         isInEditMode = true
         
         colorSlider.isHidden = false
         lineWidthSlider.isHidden = false
         editCancelButton.isHidden = false
         sprayPaintCan.isHidden = true
+        undoButton.isHidden = true
+        editButton.isHidden = true
+        saveButton.isHidden = true
         for btn in shapeButtons {
             btn.isHidden = false
+        }
+    }
+    
+    @IBAction func savePressed(_ sender: Any) {
+        let userCoords = locationManager.location!.coordinate
+        sceneView.session.getCurrentWorldMap { (worldMap, error) in
+            guard let worldMap = worldMap else {
+                return
+            }
+            
+            //take screenshot, then archive data to firebase
+            do {
+                try self.takeScreenshot(worldMap: worldMap, coordinate: userCoords)
+            } catch {
+                fatalError("Error saving world map: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var editButton: UIButton!
+    
+    @IBAction func undoPressed(_ sender: Any) {
+        if mostRecentlyMadeNodes.count >= 1 {
+            DispatchQueue.main.async {
+                for node in self.mostRecentlyMadeNodes[0] {
+                    node.removeFromParentNode()
+                }
+                self.mostRecentlyMadeNodes.remove(at: 0)
+            }
         }
     }
     
@@ -132,6 +155,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         lineWidthSlider.isHidden = true
         editCancelButton.isHidden = true
         sprayPaintCan.isHidden = false
+        undoButton.isHidden = false
+        editButton.isHidden = false
+        saveButton.isHidden = false
         for btn in shapeButtons {
             btn.isHidden = true
         }
@@ -159,25 +185,34 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         }*/
     }
     
+    func milesToMeters(miles: Double) -> Double {
+        return miles * 1609.34
+    }
+    
+    //var potentialWorldMaps: ARWorldMap[] = []
     func getStartingWorldMapData() {
-        //TODO: change this so it gets data from nearby posts
-        print("resetting tracking config")
-        self.resetTrackingConfiguration(with: nil)
-        /*databaseRef?.queryOrdered(byChild: "newestARPost")
-            .observe(.value, with: { snapshot in
-                    let httpsReference = self.storage.reference(forURL: snapshot.value as? String ?? "error")
-                    
-                    httpsReference.getData(maxSize: 3 * 1024 * 1024) { data, error in
-                        if let error = error {
-                            print("\n\ncould not get newest world map - instead starting with none\n\n")
-                            self.resetTrackingConfiguration(with: nil)
-                        } else {
-                            print(error.debugDescription)
-                            let newMap = self.unarchiveData(worldMapData: data!)
-                            self.resetTrackingConfiguration(with: newMap)
-                        }
+        var worldMap: ARWorldMap?
+        let regionQuery = geoFire?.query(at: locationManager.location!, withRadius: milesToMeters(miles: 0.1))
+        regionQuery?.observe(.keyEntered, with: { (key, location) in
+            print("observing")
+            self.databaseRef?.queryOrderedByKey().queryEqual(toValue: key).observe(.value, with: { snapshot in
+                print("in query")
+                let arAnno = ARAnnotation(key:key, snapshot:snapshot)
+                let httpsReference = self.storage.reference(forURL: arAnno.worldMapDataLink as? String ?? "error")
+                
+                httpsReference.getData(maxSize: 3 * 1024 * 1024) { data, error in
+                    if let error = error {
+                        print("could not get nearby world map - instead starting with none")
+                        self.resetTrackingConfiguration(with: nil)
+                    } else {
+                        worldMap = self.unarchiveData(worldMapData: data!)
+                        self.resetTrackingConfiguration(with: nil)
                     }
-            })*/
+                }
+            })
+            print("done w/ observing")
+        })
+        self.resetTrackingConfiguration(with: nil)
     }
     
     var mostRecentlyMadeNodes = [[SCNNode]]()
@@ -323,22 +358,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         sceneView.session.run(configuration, options: options)
     }
-
-    @IBAction func saveClicked(_ sender: Any) {
-        let userCoords = locationManager.location!.coordinate
-        sceneView.session.getCurrentWorldMap { (worldMap, error) in
-            guard let worldMap = worldMap else {
-                print("here - worldmap")
-                return
-            }
-            
-            do {
-                try self.archiveData(worldMap: worldMap, coordinate: userCoords)
-            } catch {
-                fatalError("Error saving world map: \(error.localizedDescription)")
-            }
-        }
-    }
     
     func unarchiveData(worldMapData data: Data) -> ARWorldMap? {
         guard let unarchievedObject = try? NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data),
@@ -347,6 +366,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         return worldMap
     }
     
+    var addedAnnotations: [ARAnnotation] = []
     func archiveData(worldMap: ARWorldMap, coordinate: CLLocationCoordinate2D) throws {
         let data = try NSKeyedArchiver.archivedData(withRootObject: worldMap, requiringSecureCoding: true)
         let storageRef = storage.reference()
@@ -372,10 +392,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     print(downloadURL.absoluteString)
                     let newAnnotation = ARAnnotation(
                                                  dateCreated: dateCreatedStr,
-                                                 imageLink: "Just Testing",
+                                                 imageLink: self.imageDownloadUrl,
                                                  worldMapDataLink: downloadURL.absoluteString,
                                                  latitude: coordinate.latitude,
                                                  longitude: coordinate.longitude)
+                    self.addedAnnotations.append(newAnnotation)
                     
                     self.databaseRef.child(newAnnotation.dateCreated)
                         .setValue(newAnnotation.toAnyObject())
@@ -384,6 +405,62 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     return
                 }
             }
+        }
+    }
+    
+    var imageDownloadUrl = "n/a"
+    func takeScreenshot(worldMap: ARWorldMap, coordinate: CLLocationCoordinate2D) throws {
+        let data = self.sceneView.snapshot().pngData()
+        let storageRef = storage.reference()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let dateCreated = NSDate()
+        let dateCreatedStr = formatter.string(from: dateCreated as Date)
+        
+        // Create a reference to the file you want to upload
+        let arpostRef = storageRef.child(dateCreatedStr)
+        
+        //upload the data
+        if let data = data {
+            DispatchQueue.main.async {
+                // Briefly flash the screen.
+                let flashOverlay = UIView(frame: self.sceneView.frame)
+                flashOverlay.backgroundColor = UIColor.white
+                self.sceneView.addSubview(flashOverlay)
+                UIView.animate(withDuration: 0.25, animations: {
+                    flashOverlay.alpha = 0.0
+                }, completion: { _ in
+                    flashOverlay.removeFromSuperview()
+                })
+            }
+            
+            let uploadTask = arpostRef.putData(data, metadata: nil) { (metadata, error) in
+                guard let metadata = metadata else {
+                    // Uh-oh, an error occurred!
+                    return
+                }
+                
+                // You can also access to download URL after upload.
+                arpostRef.downloadURL { (url, error) in
+                    if let downloadURL = url {
+                        self.imageDownloadUrl = downloadURL.absoluteString
+                        do {
+                            try self.archiveData(worldMap: worldMap, coordinate: coordinate)
+                        }
+                        catch {
+                            print("error archiving world map data")
+                        }
+                    } else {
+                        print(error.debugDescription)
+                        self.imageDownloadUrl = "n/a"
+                    }
+                }
+            }
+        }
+        else {
+            self.imageDownloadUrl = "n/a"
         }
     }
     
@@ -411,6 +488,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "unwindToMap" {
+            let destVC = segue.destination as? MapViewController
+            for anno in addedAnnotations {
+                destVC?.addNewARAnnotation(anno)
+            }
+        }
     }
 }
 
