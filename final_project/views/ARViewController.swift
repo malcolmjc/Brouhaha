@@ -396,6 +396,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                                  worldMapDataLink: downloadURL.absoluteString,
                                                  latitude: coordinate.latitude,
                                                  longitude: coordinate.longitude)
+                    self.geoFire?.setLocation(CLLocation(latitude: newAnnotation.latitude,
+                                             longitude: newAnnotation.longitude),
+                                             forKey: newAnnotation.dateCreated)
                     self.addedAnnotations.append(newAnnotation)
                     
                     self.databaseRef.child(newAnnotation.dateCreated)

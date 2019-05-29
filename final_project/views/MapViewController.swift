@@ -28,15 +28,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         //let startRegion = MKCoordinateRegion(center: locationManager.location!.coordinate, span: span)
         let startRegion = MKCoordinateRegion(center: cscBuilding, span: span)
         map.setRegion(startRegion, animated: true)
-        
-        retrieveARAnnotations()
-    }
-    
-    func geofireConfigure() {
-        for anno in arAnnotations {
-            geoFire?.setLocation(CLLocation(latitude: anno.latitude,
-                                             longitude: anno.longitude), forKey: anno.dateCreated)
-        }
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -105,7 +96,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-        mapView.setRegion(MKCoordinateRegion.init(center: (mapView.userLocation.location?.coordinate)!, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)), animated: true)
+        mapView.setRegion(MKCoordinateRegion.init(center: (mapView.userLocation.location?.coordinate)!,
+         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)), animated: true)
     }
     
     var alreadyUsedUrls = Set<String>()
@@ -122,18 +114,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     let another = CLLocationCoordinate2D(latitude: 35.903529, longitude: -120.662795)
     let campusMarket = CLLocationCoordinate2D(latitude: 35.303529, longitude: -120.662795)
     let cscBuilding = CLLocationCoordinate2D(latitude: 35.300066, longitude: -120.662065)
-    func retrieveARAnnotations() {
-        self.databaseRef!.observeSingleEvent(of: .value, with: { (snapshot) in
-            for snap in snapshot.children {
-                let snap = snap as! DataSnapshot
-                self.arAnnotations.append(ARAnnotation(key: snap.key, snapshot: snapshot))
-            }
-            
-            self.geofireConfigure()
-        }) { (error) in
-            print(error.localizedDescription)
-        }
-    }
     
     @IBAction func cameraButton(_ sender: Any) {
         performSegue(withIdentifier: "showARCamera", sender: self)
