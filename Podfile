@@ -15,6 +15,7 @@ target 'final_project' do
   pod 'GooglePlaces'
   pod 'GoogleMaps'
   pod 'SwiftyJSON'
+  pod 'GeoFire', '>= 1.1'
 
   target 'final_projectTests' do
     inherit! :search_paths
@@ -32,6 +33,7 @@ target 'final_project' do
     pod 'GooglePlaces'
     pod 'GoogleMaps'
     pod 'SwiftyJSON'
+    pod 'GeoFire', '>= 1.1'
   end
 
 end
