@@ -2,12 +2,12 @@
 //  ARViewController.swift
 //  final_project
 //
-//  Created by liblabs-mac on 3/2/19.
-//  Copyright © 2019 liblabs-mac. All rights reserved.
+//  Created by Malcolm Craney on 3/2/19.
+//  Copyright © 2019 Malcolm Craney. All rights reserved.
 //
 // Credit to https://github.com/Rageeni/AR-Drawing
 // And https://www.appcoda.com/arkit-persistence/
-// For helping me create the AR component
+// For helping me in my design and creation of the AR component
 
 import UIKit
 import ARKit

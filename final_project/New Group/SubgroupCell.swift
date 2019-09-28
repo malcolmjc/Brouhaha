@@ -2,8 +2,8 @@
 //  SubgroupCell.swift
 //  final_project
 //
-//  Created by Lindsey Piggott on 4/30/19.
-//  Copyright © 2019 liblabs-mac. All rights reserved.
+//  Created by Malcolm Craney on 4/30/19.
+//  Copyright © 2019 Malcolm Craney. All rights reserved.
 //
 
 import UIKit

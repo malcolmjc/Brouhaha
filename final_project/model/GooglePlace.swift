@@ -3,8 +3,8 @@
 //  final_project
 //
 //  Created by Malcolm Craney on 4/21/19.
-//  Copyright © 2019 liblabs-mac. All rights reserved.
-// credit to https://www.raywenderlich.com/197-google-maps-ios-sdk-tutorial-getting-started
+//  Copyright © 2019 Malcolm Craney. All rights reserved.
+//  Credit to https://www.raywenderlich.com/197-google-maps-ios-sdk-tutorial-getting-started
 
 import UIKit
 import Foundation
