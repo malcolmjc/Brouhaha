@@ -42,7 +42,7 @@ class TextPostTests: XCTestCase {
         XCTAssert(textPost.isUpvoted == false)
     }
    
-    func testToAny2() {
+    func testToAnyChangeContent() {
         let newContent = "new content"
         textPost.content = newContent
       

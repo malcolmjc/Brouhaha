@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -34,6 +34,7 @@
 		763E46BB222DE04A008EF20F /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763E46BA222DE04A008EF20F /* AddCommentViewController.swift */; };
 		76B2F93D2F1585ABB9E23BFC /* Pods_final_projectTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F2C9626FA5D3E024C75BCF1 /* Pods_final_projectTests.framework */; };
 		82B2A6388BF1A73A8234EFAB /* Pods_final_projectUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0422CB00AB64569F38DAA176 /* Pods_final_projectUITests.framework */; };
+		F10E4F1E234035250071F5F7 /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10E4F1D234035250071F5F7 /* GroupTests.swift */; };
 		F152C674222CD9C8003AB199 /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F152C673222CD9C8003AB199 /* TextPost.swift */; };
 		F152C67B222CEE82003AB199 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F152C67A222CEE82003AB199 /* GoogleService-Info.plist */; };
 		F152C67F222CF4CD003AB199 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F152C67E222CF4CD003AB199 /* CoreText.framework */; };
@@ -46,8 +47,7 @@
 		F1E3B1BA222B5E6B00EDB5F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1E3B1B8222B5E6B00EDB5F7 /* Main.storyboard */; };
 		F1E3B1BC222B5E7C00EDB5F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1E3B1BB222B5E7C00EDB5F7 /* Assets.xcassets */; };
 		F1E3B1BF222B5E7C00EDB5F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1E3B1BD222B5E7C00EDB5F7 /* LaunchScreen.storyboard */; };
-		F1E3B1CA222B5E7D00EDB5F7 /* final_projectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1C9222B5E7D00EDB5F7 /* final_projectTests.swift */; };
-		F1E3B1D5222B5E7D00EDB5F7 /* final_projectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1D4222B5E7D00EDB5F7 /* final_projectUITests.swift */; };
+		F1E3B1D5222B5E7D00EDB5F7 /* PostsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1D4222B5E7D00EDB5F7 /* PostsTests.swift */; };
 		F1E3B1E3222B613A00EDB5F7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1E2222B613A00EDB5F7 /* ExploreViewController.swift */; };
 		F1E3B1E9222B770700EDB5F7 /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3B1E8222B770700EDB5F7 /* AddPostViewController.swift */; };
 /* End PBXBuildFile section */
@@ -103,6 +103,7 @@
 		CF4F4713E5A1CFF2C21BA48F /* Pods-final_project.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_project.release.xcconfig"; path = "Target Support Files/Pods-final_project/Pods-final_project.release.xcconfig"; sourceTree = "<group>"; };
 		D9970B93E0B168A895198267 /* Pods-final_projectUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_projectUITests.release.xcconfig"; path = "Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests.release.xcconfig"; sourceTree = "<group>"; };
 		EC6B42E175541EB8BA85005B /* Pods-final_project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-final_project.debug.xcconfig"; path = "Target Support Files/Pods-final_project/Pods-final_project.debug.xcconfig"; sourceTree = "<group>"; };
+		F10E4F1D234035250071F5F7 /* GroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTests.swift; sourceTree = "<group>"; };
 		F152C673222CD9C8003AB199 /* TextPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPost.swift; sourceTree = "<group>"; };
 		F152C67A222CEE82003AB199 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F152C67C222CF167003AB199 /* final_project.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = final_project.entitlements; sourceTree = "<group>"; };
@@ -119,10 +120,9 @@
 		F1E3B1BE222B5E7C00EDB5F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F1E3B1C0222B5E7C00EDB5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F1E3B1C5222B5E7D00EDB5F7 /* final_projectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = final_projectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F1E3B1C9222B5E7D00EDB5F7 /* final_projectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = final_projectTests.swift; sourceTree = "<group>"; };
 		F1E3B1CB222B5E7D00EDB5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F1E3B1D0222B5E7D00EDB5F7 /* final_projectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = final_projectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F1E3B1D4222B5E7D00EDB5F7 /* final_projectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = final_projectUITests.swift; sourceTree = "<group>"; };
+		F1E3B1D4222B5E7D00EDB5F7 /* PostsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsTests.swift; sourceTree = "<group>"; };
 		F1E3B1D6222B5E7D00EDB5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F1E3B1E2222B613A00EDB5F7 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		F1E3B1E8222B770700EDB5F7 /* AddPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
@@ -177,6 +177,19 @@
 				D9970B93E0B168A895198267 /* Pods-final_projectUITests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		F10E4F1C23402FC80071F5F7 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				28F034FB228C7EFE0019FE39 /* test.png */,
+				28F034FD228C88F00019FE39 /* camera.png */,
+				28F03505228C90B70019FE39 /* red_x.png */,
+				2882F136229EF93F00957EF9 /* save.png */,
+				2882F138229EF95000957EF9 /* undo.png */,
+				2882F13A229EF95F00957EF9 /* edit.png */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 		F152C671222CD856003AB199 /* views */ = {
@@ -256,12 +269,7 @@
 		F1E3B1B1222B5E6A00EDB5F7 /* final_project */ = {
 			isa = PBXGroup;
 			children = (
-				2882F13A229EF95F00957EF9 /* edit.png */,
-				2882F138229EF95000957EF9 /* undo.png */,
-				2882F136229EF93F00957EF9 /* save.png */,
-				28F03505228C90B70019FE39 /* red_x.png */,
-				28F034FD228C88F00019FE39 /* camera.png */,
-				28F034FB228C7EFE0019FE39 /* test.png */,
+				F10E4F1C23402FC80071F5F7 /* images */,
 				285CAFDB2266D868005CF728 /* sound */,
 				F152C67C222CF167003AB199 /* final_project.entitlements */,
 				F152C67A222CEE82003AB199 /* GoogleService-Info.plist */,
@@ -280,11 +288,11 @@
 		F1E3B1C8222B5E7D00EDB5F7 /* final_projectTests */ = {
 			isa = PBXGroup;
 			children = (
-				F1E3B1C9222B5E7D00EDB5F7 /* final_projectTests.swift */,
 				F1E3B1CB222B5E7D00EDB5F7 /* Info.plist */,
 				285CAFE02266E6BC005CF728 /* TextPostTests.swift */,
 				28164A762266EDF1003B4DF4 /* CommentCellTests.swift */,
 				28164A782266EE16003B4DF4 /* MessageCellTests.swift */,
+				F10E4F1D234035250071F5F7 /* GroupTests.swift */,
 			);
 			path = final_projectTests;
 			sourceTree = "<group>";
@@ -292,7 +300,7 @@
 		F1E3B1D3222B5E7D00EDB5F7 /* final_projectUITests */ = {
 			isa = PBXGroup;
 			children = (
-				F1E3B1D4222B5E7D00EDB5F7 /* final_projectUITests.swift */,
+				F1E3B1D4222B5E7D00EDB5F7 /* PostsTests.swift */,
 				F1E3B1D6222B5E7D00EDB5F7 /* Info.plist */,
 				28164A7A2267A482003B4DF4 /* AddPostUITests.swift */,
 				28164A7C2267A526003B4DF4 /* ARViewUITests.swift */,
@@ -499,28 +507,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
-				"${BUILT_PRODUCTS_DIR}/RGSColorSlider/RGSColorSlider.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RGSColorSlider.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -533,28 +524,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-final_project/Pods-final_project-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
-				"${BUILT_PRODUCTS_DIR}/RGSColorSlider/RGSColorSlider.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-final_project/Pods-final_project-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RGSColorSlider.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-final_project/Pods-final_project-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -584,18 +558,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-final_project/Pods-final_project-resources.sh",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
-				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-final_project/Pods-final_project-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-final_project/Pods-final_project-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -630,18 +597,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests-resources.sh",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
-				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-final_projectUITests/Pods-final_projectUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -685,7 +645,7 @@
 				285CAFE12266E6BC005CF728 /* TextPostTests.swift in Sources */,
 				28164A792266EE16003B4DF4 /* MessageCellTests.swift in Sources */,
 				28164A772266EDF1003B4DF4 /* CommentCellTests.swift in Sources */,
-				F1E3B1CA222B5E7D00EDB5F7 /* final_projectTests.swift in Sources */,
+				F10E4F1E234035250071F5F7 /* GroupTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -693,7 +653,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1E3B1D5222B5E7D00EDB5F7 /* final_projectUITests.swift in Sources */,
+				F1E3B1D5222B5E7D00EDB5F7 /* PostsTests.swift in Sources */,
 				28164A7D2267A526003B4DF4 /* ARViewUITests.swift in Sources */,
 				28164A7B2267A482003B4DF4 /* AddPostUITests.swift in Sources */,
 			);

@@ -29,25 +29,21 @@ class ARViewUITests: XCTestCase {
     func testChangePaint() {
         let app = XCUIApplication()
         app.tabBars.buttons["AR"].tap()
+        app.buttons["camera"].tap()
         XCTAssert(app.buttons["PinClipart"].exists)
         XCTAssert(app.buttons["plane"].exists == false)
         XCTAssert(app.buttons["torus"].exists == false)
         XCTAssert(app.buttons["cube"].exists == false)
         XCTAssert(app.buttons["pyramid"].exists == false)
         XCTAssert(app.buttons["sphere"].exists == false)
-        
-        
-        app.toolbars["Toolbar"].buttons["Change Paint"].tap()
+
+        app.buttons["Edit"].tap()
         XCTAssert(app.buttons["PinClipart"].exists == false)
-        XCTAssert(app.buttons["plane"].exists == true)
         XCTAssert(app.buttons["plane"].exists)
         XCTAssert(app.buttons["torus"].exists)
         XCTAssert(app.buttons["cube"].exists)
         XCTAssert(app.buttons["pyramid"].exists)
         XCTAssert(app.buttons["sphere"].exists)
-        
-        app.buttons["plane"].tap()
-        app.buttons["Go back"].tap()
     }
 
 }

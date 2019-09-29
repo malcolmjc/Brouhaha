@@ -18,6 +18,7 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var addPost: UIButton!
     
     var groupName: String?
+    var subgroupName = "Students"
     var messageList = [TextPost]()
     var cellList = [MessageCell?]()
     
@@ -42,13 +43,13 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        groupTitleLabel.text = groupName ?? "students"
+        if (groupName == nil) {
+            groupName = "Cal Poly"
+        }
+        groupTitleLabel.text = groupName
         
-        /*databaseRef = Database.database().reference().child("Groups")
-            .child(superGroup).child("subgroups").child(groupTitleLabel.text!)*/
-        
-        databaseRef = Database.database().reference().child("Groups")
-            .child(groupTitleLabel.text!).child("posts")
+        databaseRef = Database.database().reference().child("Groups").child(groupName!)
+            .child("subgroups").child(subgroupName).child("posts")
         
         setupAutoDimensionTable()
         
@@ -61,7 +62,7 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func getLastUpdate() {
         if let lastUpdate = ourDefaults.object(forKey: "lastUpdate") as? Date {
             let groupArchiveURL = PostsViewController.documentsDirectory.appendingPathComponent("savedPosts" +
-                ((groupName ?? "Cal Poly").replacingOccurrences(of: " ", with: "")))
+                ((groupName!).replacingOccurrences(of: " ", with: "")))
             
             do {
                 let data = try Data(contentsOf: groupArchiveURL)
@@ -114,7 +115,7 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
         let groupArchiveURL = PostsViewController.documentsDirectory
-                                .appendingPathComponent("savedPosts" + ((groupName ?? "Cal Poly")
+                                .appendingPathComponent("savedPosts" + ((groupName!)
                                 .replacingOccurrences(of: " ", with: "")))
         
         // persist data
@@ -205,11 +206,11 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return cell!
     }
     
-    var subgroupName = ""
     @IBAction func unwindToPosts(segue: UIStoryboardSegue) {
         groupTitleLabel.text = subgroupName
         
-        databaseRef = Database.database().reference().child("Groups").child(groupName!).child("subgroups").child(subgroupName).child("posts")
+        databaseRef = Database.database().reference().child("Groups").child(groupName!)
+            .child("subgroups").child(subgroupName).child("posts")
         
         retrievePosts()
     }
@@ -223,11 +224,11 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
              let destVC = segue.destination as? AddPostViewController
              destVC?.groupName = groupName
              destVC?.subgroupName = subgroupName
-             destVC?.header = "Post to Group: " + (groupName ?? "Cal Poly")
+             destVC?.header = "Post to Group: " + (groupName!)
         } else if segue.identifier == "showPostDetail" {
             let destVC = segue.destination as? PostDetailView
             let selectedIndexPath = tableView.indexPathForSelectedRow
-            destVC?.groupName = groupName ?? "Cal Poly"
+            destVC?.groupName = groupName!
             destVC?.post = messageList[selectedIndexPath!.section]
         }
     }

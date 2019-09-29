@@ -528,7 +528,7 @@
                                     <constraint firstAttribute="height" constant="64" id="CV0-VN-8VD"/>
                                     <constraint firstAttribute="width" constant="64" id="y6t-Xf-AhA"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="undo.png"/>
+                                <state key="normal" title="Undo" image="undo.png"/>
                                 <connections>
                                     <action selector="undoPressed:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="B7h-aN-wgz"/>
                                 </connections>
@@ -540,7 +540,7 @@
                                     <constraint firstAttribute="width" constant="64" id="EEa-z9-Tlk"/>
                                     <constraint firstAttribute="height" constant="64" id="gFf-h2-rPp"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="edit.png"/>
+                                <state key="normal" title="Edit" image="edit.png"/>
                                 <connections>
                                     <action selector="changePaintPressed:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="cuA-m0-nJJ"/>
                                 </connections>
@@ -552,7 +552,7 @@
                                     <constraint firstAttribute="height" constant="64" id="Alh-ns-1yp"/>
                                     <constraint firstAttribute="width" constant="64" id="XhY-1c-TwF"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="save.png"/>
+                                <state key="normal" title="Save" image="save.png"/>
                                 <connections>
                                     <action selector="savePressed:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="w0K-Pf-3vE"/>
                                 </connections>
