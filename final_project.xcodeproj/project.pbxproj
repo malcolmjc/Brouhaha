@@ -218,8 +218,7 @@
 				285CAFD62266D529005CF728 /* MessageCell.swift */,
 				283BF23322796E6B00A189FA /* SubgroupCell.swift */,
 			);
-			name = cells;
-			path = "New Group";
+			path = cells;
 			sourceTree = "<group>";
 		};
 		F152C67D222CF4CD003AB199 /* Frameworks */ = {
