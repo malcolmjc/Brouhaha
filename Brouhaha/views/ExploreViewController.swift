@@ -28,7 +28,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var locationManager = CLLocationManager()
     
-    //5 miles
+    // 5 miles
     private let searchRadius: Double = 8047
     
     override func viewDidLoad() {
@@ -134,13 +134,8 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
         placesTask?.resume()
     }
 
-    
     func getCurrentPlace() {
         getNearbyPlaces(locationManager.location!.coordinate, radius: searchRadius, types: searchedTypes)
-    }
-    
-    @IBAction func addGroupButtonClicked(_ sender: Any) {
-        performSegue(withIdentifier: "addGroup", sender: self)
     }
     
     @IBAction func sortPressed(_ sender: Any) {

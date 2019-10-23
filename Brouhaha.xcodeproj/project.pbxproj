@@ -35,6 +35,7 @@
 		76B2F93D2F1585ABB9E23BFC /* Pods_BrouhahaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F2C9626FA5D3E024C75BCF1 /* Pods_BrouhahaTests.framework */; };
 		82B2A6388BF1A73A8234EFAB /* Pods_BrouhahaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0422CB00AB64569F38DAA176 /* Pods_BrouhahaUITests.framework */; };
 		F10E4F1E234035250071F5F7 /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10E4F1D234035250071F5F7 /* GroupTests.swift */; };
+		F13D9BF72360D152006250BE /* filter.png in Resources */ = {isa = PBXBuildFile; fileRef = F13D9BF62360D151006250BE /* filter.png */; };
 		F152C674222CD9C8003AB199 /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F152C673222CD9C8003AB199 /* TextPost.swift */; };
 		F152C67B222CEE82003AB199 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F152C67A222CEE82003AB199 /* GoogleService-Info.plist */; };
 		F152C67F222CF4CD003AB199 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F152C67E222CF4CD003AB199 /* CoreText.framework */; };
@@ -104,6 +105,7 @@
 		D9970B93E0B168A895198267 /* Pods-BrouhahaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrouhahaUITests.release.xcconfig"; path = "Target Support Files/Pods-BrouhahaUITests/Pods-BrouhahaUITests.release.xcconfig"; sourceTree = "<group>"; };
 		EC6B42E175541EB8BA85005B /* Pods-Brouhaha.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brouhaha.debug.xcconfig"; path = "Target Support Files/Pods-Brouhaha/Pods-Brouhaha.debug.xcconfig"; sourceTree = "<group>"; };
 		F10E4F1D234035250071F5F7 /* GroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTests.swift; sourceTree = "<group>"; };
+		F13D9BF62360D151006250BE /* filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter.png; sourceTree = "<group>"; };
 		F152C673222CD9C8003AB199 /* TextPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPost.swift; sourceTree = "<group>"; };
 		F152C67A222CEE82003AB199 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F152C67C222CF167003AB199 /* Brouhaha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Brouhaha.entitlements; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 		F10E4F1C23402FC80071F5F7 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				F13D9BF62360D151006250BE /* filter.png */,
 				28F034FB228C7EFE0019FE39 /* test.png */,
 				28F034FD228C88F00019FE39 /* camera.png */,
 				28F03505228C90B70019FE39 /* red_x.png */,
@@ -434,6 +437,7 @@
 				2882F137229EF94000957EF9 /* save.png in Resources */,
 				285CAFDE2266D899005CF728 /* spray.wav in Resources */,
 				28F034FE228C88F00019FE39 /* camera.png in Resources */,
+				F13D9BF72360D152006250BE /* filter.png in Resources */,
 				F1E3B1BA222B5E6B00EDB5F7 /* Main.storyboard in Resources */,
 				2882F139229EF95100957EF9 /* undo.png in Resources */,
 			);

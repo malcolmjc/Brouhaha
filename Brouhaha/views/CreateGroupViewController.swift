@@ -13,13 +13,14 @@ import FirebaseDatabase
 class CreateGroupViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var groupField: UITextField!
     @IBOutlet weak var textView: UITextView!
+    let textColor = UIColor.white
     
     var databaseRef: DatabaseReference!
     
     func setupTextView() {
         textView.delegate = self
         textView.text = "Group description goes here..."
-        textView.textColor = UIColor.lightGray
+        textView.textColor = textColor
     }
     
     var supergroupName: String!
@@ -30,17 +31,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray {
-            textView.text = nil
-            textView.textColor = UIColor.black
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = "Group description goes here..."
-            textView.textColor = UIColor.lightGray
-        }
+        textView.text = nil
     }
     
     var cancelled = false
@@ -53,7 +44,6 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
             let newGroupRef = databaseRef.child(groupField.text!)
             newGroupRef.setValue(newGroup!.toAnyObject())
             
-            //TODO - uncomment this
             performSegue(withIdentifier: "unwindToGroup", sender: self)
         } else {
             groupField.placeholder = "Must have a name!"

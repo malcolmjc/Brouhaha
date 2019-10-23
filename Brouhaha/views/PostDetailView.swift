@@ -24,6 +24,7 @@ class PostDetailView: UIViewController, UITableViewDelegate, UITableViewDataSour
     var databaseRef: DatabaseReference!
     
     func setupAutoDimensionTable() {
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 64
         tableView.separatorColor = UIColor(red: 0.76, green: 0.55, blue: 0.62, alpha: 1.0)
@@ -39,10 +40,13 @@ class PostDetailView: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        messageContentLabel.layer.cornerRadius = 25
+        messageContentLabel.layer.masksToBounds = true
+        
         setupAutoDimensionTable()
         
-        groupTitleLabel.text = "Group:\n" + (groupName ?? "N/A")
-        messageContentLabel.text = "Message:\n" +  (post?.content ?? "N/A")
+        groupTitleLabel.text = (groupName ?? "N/A")
+        messageContentLabel.text = (post?.content ?? "N/A")
         
         setupBackButton()
         
@@ -93,6 +97,12 @@ class PostDetailView: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell?.layer.masksToBounds = true
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
     }
     
     @IBAction func unwindToPostDetail(segue: UIStoryboardSegue) {

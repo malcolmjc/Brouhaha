@@ -14,6 +14,7 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
     var header: String!
     var groupName: String!
     var subgroupName: String!
+    let textColor = UIColor.white
     
     @IBOutlet weak var groupTitleLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
@@ -23,7 +24,9 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
     func setupTextView() {
         textView.delegate = self
         textView.text = "Message goes here..."
-        textView.textColor = UIColor.lightGray
+        textView.textColor = textColor
+        textView.layer.cornerRadius = 14
+        textView.layer.masksToBounds = true
     }
     
     override func viewDidLoad() {
@@ -37,17 +40,7 @@ class AddPostViewController: UIViewController, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray {
-            textView.text = nil
-            textView.textColor = UIColor.black
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = "Message goes here..."
-            textView.textColor = UIColor.lightGray
-        }
+        textView.text = nil
     }
     
     var cancelled = false

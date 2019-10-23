@@ -22,7 +22,7 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var messageList = [TextPost]()
     var cellList = [MessageCell?]()
     
-    //Codable persistence stuff
+    // Codable persistence stuff
     static let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     static let archiveURL = documentsDirectory.appendingPathComponent("savedPosts")
     var ourDefaults = UserDefaults.standard
@@ -32,9 +32,9 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var databaseRef: DatabaseReference!
     
     func setupAutoDimensionTable() {
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 64
-        tableView.separatorColor = UIColor(red: 0.76, green: 0.55, blue: 0.62, alpha: 1.0)
         
         self.tableView.mj_header = MJRefreshNormalHeader(refreshingTarget: self,
                                                          refreshingAction: #selector(PostsViewController.refreshPosts))
@@ -204,6 +204,12 @@ class PostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cell?.layer.masksToBounds = true
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
     }
     
     @IBAction func unwindToPosts(segue: UIStoryboardSegue) {
