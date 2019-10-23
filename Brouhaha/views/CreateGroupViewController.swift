@@ -21,6 +21,8 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         textView.delegate = self
         textView.text = "Group description goes here..."
         textView.textColor = textColor
+        textView.layer.cornerRadius = 14
+        textView.layer.masksToBounds = true
     }
     
     var supergroupName: String!
